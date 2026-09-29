@@ -23,10 +23,10 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
   const mapInstanceRef = useRef<L.Map | null>(null);
   const layerGroupRef = useRef<L.LayerGroup | null>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
+  const labelsTileLayerRef = useRef<L.TileLayer | null>(null);
   const radarTileLayerRef = useRef<L.TileLayer | null>(null);
 
-
-  const [activeBaseMap, setActiveBaseMap] = useState<'dark' | 'light' | 'osm'>('dark');
+  const [activeBaseMap, setActiveBaseMap] = useState<'dark' | 'light' | 'satellite'>('dark');
   const [showLayersMenu, setShowLayersMenu] = useState(false);
   const [layersVisibility, setLayersVisibility] = useState({
     radarReflectivity: true,
@@ -36,6 +36,29 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
     etaLabels: true,
     districtBoundaries: true
   });
+
+  const getBaseMapUrls = (type: 'dark' | 'light' | 'satellite', currentTheme: 'light' | 'dark') => {
+    if (type === 'satellite') {
+      return {
+        base: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        labels: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+        subdomains: ''
+      };
+    }
+    if (type === 'light' || currentTheme === 'light') {
+      return {
+        base: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        labels: null,
+        subdomains: 'abc'
+      };
+    }
+    // Default Dark: ESRI Dark Gray Canvas (Clean, zero watermarks, 100% free)
+    return {
+      base: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      labels: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+      subdomains: ''
+    };
+  };
 
   // Initialize Leaflet map
   useEffect(() => {
@@ -50,16 +73,21 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
       attributionControl: false
     });
 
-    const tileUrl = theme === 'dark' || activeBaseMap === 'dark'
-      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+    const config = getBaseMapUrls(activeBaseMap, theme);
 
-    const tileLayer = L.tileLayer(tileUrl, {
+    const tileLayer = L.tileLayer(config.base, {
       maxZoom: 19,
-      subdomains: 'abcd'
+      subdomains: config.subdomains || 'abc'
     }).addTo(map);
-
     tileLayerRef.current = tileLayer;
+
+    if (config.labels) {
+      const labelsLayer = L.tileLayer(config.labels, {
+        maxZoom: 19,
+        zIndex: 350
+      }).addTo(map);
+      labelsTileLayerRef.current = labelsLayer;
+    }
 
     // Layer group for all dynamic overlays
     const layerGroup = L.layerGroup().addTo(map);
@@ -76,12 +104,29 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
   // Update base tiles on theme or activeBaseMap change
   useEffect(() => {
     if (!mapInstanceRef.current || !tileLayerRef.current) return;
-    const tileUrl = theme === 'dark' || activeBaseMap === 'dark'
-      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+    const map = mapInstanceRef.current;
+    const config = getBaseMapUrls(activeBaseMap, theme);
 
-    tileLayerRef.current.setUrl(tileUrl);
+    tileLayerRef.current.setUrl(config.base);
+
+    if (config.labels) {
+      if (labelsTileLayerRef.current) {
+        labelsTileLayerRef.current.setUrl(config.labels);
+      } else {
+        const labelsLayer = L.tileLayer(config.labels, {
+          maxZoom: 19,
+          zIndex: 350
+        }).addTo(map);
+        labelsTileLayerRef.current = labelsLayer;
+      }
+    } else {
+      if (labelsTileLayerRef.current) {
+        labelsTileLayerRef.current.remove();
+        labelsTileLayerRef.current = null;
+      }
+    }
   }, [theme, activeBaseMap]);
+
 
   // Sync real-time RainViewer Doppler radar tiles
   useEffect(() => {
@@ -409,18 +454,19 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
             ))}
 
             <div style={{ fontWeight: 700, borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '4px', marginTop: '6px' }}>
-              Base Map
+              Base Map (Free / No Key)
             </div>
-            <div style={{ display: 'flex', gap: '6px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px' }}>
               <button
                 onClick={() => setActiveBaseMap('dark')}
                 style={{
-                  flex: 1,
                   padding: '4px',
                   borderRadius: '3px',
                   background: activeBaseMap === 'dark' ? '#2563EB' : '#1E293B',
                   color: '#FFFFFF',
-                  fontSize: '0.7rem'
+                  fontSize: '0.7rem',
+                  border: 'none',
+                  cursor: 'pointer'
                 }}
               >
                 Dark
@@ -428,15 +474,30 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
               <button
                 onClick={() => setActiveBaseMap('light')}
                 style={{
-                  flex: 1,
                   padding: '4px',
                   borderRadius: '3px',
                   background: activeBaseMap === 'light' ? '#2563EB' : '#1E293B',
                   color: '#FFFFFF',
-                  fontSize: '0.7rem'
+                  fontSize: '0.7rem',
+                  border: 'none',
+                  cursor: 'pointer'
                 }}
               >
-                Light
+                Street
+              </button>
+              <button
+                onClick={() => setActiveBaseMap('satellite')}
+                style={{
+                  padding: '4px',
+                  borderRadius: '3px',
+                  background: activeBaseMap === 'satellite' ? '#2563EB' : '#1E293B',
+                  color: '#FFFFFF',
+                  fontSize: '0.7rem',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                Satellite
               </button>
             </div>
           </div>
