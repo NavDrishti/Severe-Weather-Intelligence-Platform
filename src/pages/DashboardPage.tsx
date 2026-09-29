@@ -7,7 +7,8 @@ import { StormDetailDrawer } from '../components/storms/StormDetailDrawer';
 import { StormCell, LocationCoordinates, ActiveFiltersState } from '../types/weather';
 import { INITIAL_LOCATION, MOCK_STORMS, SEARCHABLE_LOCATIONS } from '../data/mockData';
 import { fetchActiveStorms } from '../api/client';
-import { Search, X, MapPin } from 'lucide-react';
+import { fetchLiveConvectiveForecast, searchLocationsLive, LiveForecastResult } from '../services/weatherService';
+import { Search, X, MapPin, Loader2 } from 'lucide-react';
 
 interface DashboardPageProps {
   theme: 'light' | 'dark';
@@ -20,6 +21,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
   const [currentLocation, setCurrentLocation] = useState<LocationCoordinates>(INITIAL_LOCATION);
   const [isLocationSearchOpen, setIsLocationSearchOpen] = useState(false);
   const [locationSearchQuery, setLocationSearchQuery] = useState('');
+  const [isSearchingOnline, setIsSearchingOnline] = useState(false);
+  const [liveSearchResults, setLiveSearchResults] = useState<LocationCoordinates[]>(
+    SEARCHABLE_LOCATIONS.map(l => ({ name: l.name, state: l.state, district: l.district, lat: l.lat, lon: l.lon }))
+  );
+
+  const [liveForecast, setLiveForecast] = useState<LiveForecastResult | null>(null);
+  const [isLoadingLive, setIsLoadingLive] = useState(false);
 
   const [filters, setFilters] = useState<ActiveFiltersState>({
     hazard: 'all',
@@ -41,6 +49,43 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
     });
   }, []);
 
+  // Fetch real-time Open-Meteo convective nowcast whenever location changes
+  useEffect(() => {
+    let isCancelled = false;
+    setIsLoadingLive(true);
+    fetchLiveConvectiveForecast(currentLocation.lat, currentLocation.lon)
+      .then((result) => {
+        if (!isCancelled) {
+          setLiveForecast(result);
+          setIsLoadingLive(false);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to fetch live nowcast:', err);
+        if (!isCancelled) setIsLoadingLive(false);
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [currentLocation.lat, currentLocation.lon]);
+
+  // Dynamic live search with Open-Meteo Geocoding API
+  useEffect(() => {
+    if (!isLocationSearchOpen) return;
+    const timer = setTimeout(async () => {
+      setIsSearchingOnline(true);
+      try {
+        const results = await searchLocationsLive(locationSearchQuery);
+        setLiveSearchResults(results);
+      } finally {
+        setIsSearchingOnline(false);
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [locationSearchQuery, isLocationSearchOpen]);
+
   // Filter storms according to active pills
   const filteredStorms = storms.filter((storm) => {
     if (filters.hazard !== 'all') {
@@ -53,22 +98,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
     return true;
   });
 
-  const filteredLocations = SEARCHABLE_LOCATIONS.filter((loc) =>
-    loc.name.toLowerCase().includes(locationSearchQuery.toLowerCase()) ||
-    loc.state.toLowerCase().includes(locationSearchQuery.toLowerCase())
-  );
-
-  const handleSelectLocation = (loc: typeof SEARCHABLE_LOCATIONS[0]) => {
+  const handleSelectLocation = (loc: LocationCoordinates) => {
     setCurrentLocation({
       name: loc.name,
       state: loc.state,
       district: loc.district,
       lat: loc.lat,
-      lon: loc.lon
+      lon: loc.lon,
+      elevation_m: loc.elevation_m
     });
     setIsLocationSearchOpen(false);
     setLocationSearchQuery('');
   };
+
 
   return (
     <main className="dashboard-grid">
@@ -93,6 +135,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
         <ForecastTimeline
           selectedHorizonIndex={selectedHorizonIndex}
           onSelectHorizon={(idx) => setSelectedHorizonIndex(idx)}
+          timeline={liveForecast?.timeline}
         />
       </div>
 
@@ -101,6 +144,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
         location={currentLocation}
         onOpenLocationSearch={() => setIsLocationSearchOpen(true)}
         selectedHorizonIndex={selectedHorizonIndex}
+        liveForecast={liveForecast}
+        isLoadingLive={isLoadingLive}
       />
 
       {/* Storm Detail Drawer (When clicked on map) */}
@@ -117,6 +162,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
               <h3 style={{ fontSize: '1.05rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Search size={18} color="var(--brand-teal)" />
                 <span>Search Location Forecast</span>
+                {isSearchingOnline && <Loader2 size={15} className="spin" color="var(--brand-teal)" />}
               </h3>
               <button onClick={() => setIsLocationSearchOpen(false)}>
                 <X size={18} />
@@ -126,7 +172,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
             <input
               type="text"
               autoFocus
-              placeholder="Search Indian city, district, or state (e.g. Pune, Mumbai, Cherrapunji, Delhi)..."
+              placeholder="Search Indian city, district, or coordinates (e.g. Pune, Mumbai, Cherrapunji, Delhi, Bengaluru)..."
               value={locationSearchQuery}
               onChange={(e) => setLocationSearchQuery(e.target.value)}
               style={{
@@ -141,9 +187,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
             />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '280px', overflowY: 'auto' }}>
-              {filteredLocations.map((loc) => (
+              {liveSearchResults.map((loc, idx) => (
                 <div
-                  key={loc.name}
+                  key={`${loc.name}-${loc.lat}-${idx}`}
                   onClick={() => handleSelectLocation(loc)}
                   style={{
                     display: 'flex',
@@ -162,7 +208,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
                   <div>
                     <strong style={{ color: 'var(--text-primary)' }}>{loc.name}</strong>
                     <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginLeft: '6px' }}>
-                      ({loc.district}, {loc.state})
+                      ({loc.district || loc.state}, {loc.state})
                     </span>
                   </div>
                   <span
@@ -171,11 +217,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
                       fontWeight: 600,
                       padding: '2px 6px',
                       borderRadius: '3px',
-                      background: loc.risk === 'Very High' ? '#EF4444' : (loc.risk === 'High' ? '#F59E0B' : '#10B981'),
+                      background: 'var(--brand-teal)',
                       color: '#FFFFFF'
                     }}
                   >
-                    {loc.risk}
+                    {loc.lat.toFixed(2)}°, {loc.lon.toFixed(2)}°
                   </span>
                 </div>
               ))}

@@ -1,24 +1,30 @@
 import React, { useState } from 'react';
 import { LocationCoordinates } from '../../types/weather';
 import { HOURLY_TIMELINE } from '../../data/mockData';
-import { MapPin, Zap, CloudHail, CloudRain, Wind, Clock, ArrowUpRight, Maximize2, X, Search } from 'lucide-react';
+import { LiveForecastResult } from '../../services/weatherService';
+import { MapPin, Zap, CloudHail, CloudRain, Wind, Clock, ArrowUpRight, Maximize2, X, Search, Thermometer, Droplets, Gauge } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface HyperlocalPanelProps {
   location: LocationCoordinates;
   onOpenLocationSearch?: () => void;
   selectedHorizonIndex?: number;
+  liveForecast?: LiveForecastResult | null;
+  isLoadingLive?: boolean;
 }
 
 export const HyperlocalPanel: React.FC<HyperlocalPanelProps> = ({
   location,
   onOpenLocationSearch,
-  selectedHorizonIndex = 0
+  selectedHorizonIndex = 0,
+  liveForecast,
+  isLoadingLive = false
 }) => {
   const [expandedPreview, setExpandedPreview] = useState<'radar' | 'lightning' | null>(null);
 
-  // Dynamic values adjusted for the selected timeline horizon
-  const currentHorizon = HOURLY_TIMELINE[selectedHorizonIndex] || HOURLY_TIMELINE[0];
+  // Dynamic values adjusted for the selected timeline horizon (prefer live if present)
+  const timeline = liveForecast?.timeline || HOURLY_TIMELINE;
+  const currentHorizon = timeline[selectedHorizonIndex] || timeline[0] || HOURLY_TIMELINE[0];
 
   const probabilities = {
     lightning: currentHorizon.lightning_prob,
@@ -26,6 +32,9 @@ export const HyperlocalPanel: React.FC<HyperlocalPanelProps> = ({
     cloudburst: currentHorizon.cloudburst_prob,
     downburst: currentHorizon.downburst_prob
   };
+
+  const current = liveForecast?.current;
+
 
   return (
     <div className="hyperlocal-panel-card" role="region" aria-label="Hyperlocal Intelligence">
@@ -54,6 +63,43 @@ export const HyperlocalPanel: React.FC<HyperlocalPanelProps> = ({
           <Search size={15} />
         </button>
       </div>
+
+      {/* Live Atmospheric Telemetry Bar */}
+      {current && (
+        <div
+          style={{
+            background: 'var(--bg-subtle)',
+            borderRadius: 'var(--radius-md)',
+            padding: '10px 12px',
+            border: '1px solid var(--border-color)',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '8px',
+            fontSize: '0.75rem'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Thermometer size={14} color="#F87171" />
+            <span style={{ color: 'var(--text-muted)' }}>Temp:</span>
+            <strong style={{ color: 'var(--text-primary)' }}>{current.temperature}°C</strong>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Droplets size={14} color="#38BDF8" />
+            <span style={{ color: 'var(--text-muted)' }}>Humidity:</span>
+            <strong style={{ color: 'var(--text-primary)' }}>{current.humidity}%</strong>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Wind size={14} color="#34D399" />
+            <span style={{ color: 'var(--text-muted)' }}>Gusts:</span>
+            <strong style={{ color: 'var(--text-primary)' }}>{current.windGusts} km/h</strong>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Gauge size={14} color="#FBBF24" />
+            <span style={{ color: 'var(--text-muted)' }}>CAPE:</span>
+            <strong style={{ color: 'var(--text-primary)' }}>{current.cape} J/kg</strong>
+          </div>
+        </div>
+      )}
 
       {/* Hazard Probability */}
       <div className="hazard-prob-section">
@@ -159,10 +205,15 @@ export const HyperlocalPanel: React.FC<HyperlocalPanelProps> = ({
         <Link
           to="/data-health"
           className="freshness-badge"
-          style={{ textDecoration: 'none' }}
-          title="Inspect data pipeline & radar latency"
+          style={{
+            textDecoration: 'none',
+            background: liveForecast?.isLive ? 'rgba(16, 185, 129, 0.15)' : undefined,
+            color: liveForecast?.isLive ? '#10B981' : undefined,
+            border: liveForecast?.isLive ? '1px solid #10B981' : undefined
+          }}
+          title={liveForecast?.isLive ? "Open-Meteo Live API Active" : "Seed Model Climatology"}
         >
-          <span>↑ Live feed</span>
+          <span>{isLoadingLive ? '⏳ Fetching live...' : liveForecast?.isLive ? '● Live Open-Meteo' : '↑ Seed Data'}</span>
         </Link>
       </div>
 
@@ -172,19 +223,19 @@ export const HyperlocalPanel: React.FC<HyperlocalPanelProps> = ({
         <div className="evidence-item">
           <Zap size={14} className="evidence-icon" />
           <div>
-            <strong>Radar reflectivity increasing:</strong> Convective core intensified +4 dBZ over Lonavala axis.
+            <strong>Atmospheric Convective Energy:</strong> Surface CAPE at {current ? `${current.cape} J/kg` : '2,450 J/kg'} with thermodynamic lift.
           </div>
         </div>
         <div className="evidence-item">
-          <Zap size={14} className="evidence-icon" />
+          <Wind size={14} className="evidence-icon" />
           <div>
-            <strong>Lightning activity increasing:</strong> Flash count spiked to 85 strikes within 25 km radius.
+            <strong>Surface Boundary Dynamics:</strong> Wind gusts up to {current ? `${current.windGusts} km/h` : '42 km/h'} observed.
           </div>
         </div>
         <div className="evidence-item">
-          <Zap size={14} className="evidence-icon" />
+          <CloudRain size={14} className="evidence-icon" />
           <div>
-            <strong>Storm approaching from the northwest:</strong> Vector 65° at 38 km/h on direct intercept course.
+            <strong>Precipitation & Flash Potential:</strong> Rain rate {currentHorizon.rain_rate} mm/h with {currentHorizon.lightning_prob}% lightning probability.
           </div>
         </div>
       </div>

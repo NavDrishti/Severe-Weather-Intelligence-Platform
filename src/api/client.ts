@@ -120,9 +120,12 @@ export async function searchLocationsApi(query: string) {
     const res = await fetch(`${API_BASE}/api/v1/locations/search?q=${encodeURIComponent(query)}`, { signal: AbortSignal.timeout(2000) });
     if (res.ok) return await res.json();
   } catch (err) {
-    // Fallback
+    // Fallback to client-side live search
   }
   if (!query) return SEARCHABLE_LOCATIONS.slice(0, 6);
   const q = query.toLowerCase();
   return SEARCHABLE_LOCATIONS.filter(l => l.name.toLowerCase().includes(q) || l.state.toLowerCase().includes(q));
 }
+
+export { fetchLiveConvectiveForecast, searchLocationsLive, fetchLiveRadarTileUrl } from '../services/weatherService';
+

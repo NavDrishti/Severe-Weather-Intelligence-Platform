@@ -1,17 +1,22 @@
 import React from 'react';
+import { HourlyForecastStep } from '../../types/weather';
 import { HOURLY_TIMELINE } from '../../data/mockData';
-import { CloudRain, Zap, CloudLightning, Sun, Cloud, ChevronDown } from 'lucide-react';
+import { CloudRain, CloudLightning, Sun, Cloud, ChevronDown } from 'lucide-react';
 
 interface ForecastTimelineProps {
   selectedHorizonIndex: number;
   onSelectHorizon: (index: number) => void;
+  timeline?: HourlyForecastStep[];
 }
 
 export const ForecastTimeline: React.FC<ForecastTimelineProps> = ({
   selectedHorizonIndex,
-  onSelectHorizon
+  onSelectHorizon,
+  timeline = HOURLY_TIMELINE
 }) => {
-  const currentStep = HOURLY_TIMELINE[selectedHorizonIndex] || HOURLY_TIMELINE[0];
+  const currentStep = timeline[selectedHorizonIndex] || timeline[0] || HOURLY_TIMELINE[0];
+
+
 
   const getWeatherIcon = (weatherType: string) => {
     switch (weatherType) {
@@ -43,12 +48,12 @@ export const ForecastTimeline: React.FC<ForecastTimelineProps> = ({
 
       {/* Horizontal Steps */}
       <div className="timeline-steps-track">
-        {HOURLY_TIMELINE.map((step, idx) => (
+        {timeline.map((step, idx) => (
           <button
-            key={step.horizon}
+            key={`${step.horizon}-${idx}`}
             className={`timeline-step-btn ${selectedHorizonIndex === idx ? 'active' : ''}`}
             onClick={() => onSelectHorizon(idx)}
-            title={`Horizon: ${step.horizon} (${step.time} IST) - ${step.mode}`}
+            title={`Horizon: ${step.horizon} (${step.time}) - ${step.mode}`}
           >
             {getWeatherIcon(step.weather)}
             <span className="step-label">{step.horizon}</span>

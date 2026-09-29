@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { StormCell, LocationCoordinates } from '../../types/weather';
+import { fetchLiveRadarTileUrl } from '../../services/weatherService';
 import { Layers, ZoomIn, ZoomOut, Compass, RotateCcw, Maximize, AlertTriangle } from 'lucide-react';
 
 interface InteractiveGisMapProps {
@@ -22,6 +23,8 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
   const mapInstanceRef = useRef<L.Map | null>(null);
   const layerGroupRef = useRef<L.LayerGroup | null>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
+  const radarTileLayerRef = useRef<L.TileLayer | null>(null);
+
 
   const [activeBaseMap, setActiveBaseMap] = useState<'dark' | 'light' | 'osm'>('dark');
   const [showLayersMenu, setShowLayersMenu] = useState(false);
@@ -79,6 +82,33 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
 
     tileLayerRef.current.setUrl(tileUrl);
   }, [theme, activeBaseMap]);
+
+  // Sync real-time RainViewer Doppler radar tiles
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+
+    if (layersVisibility.radarReflectivity) {
+      fetchLiveRadarTileUrl().then((tileUrl) => {
+        if (!tileUrl || !mapInstanceRef.current) return;
+        if (radarTileLayerRef.current) {
+          radarTileLayerRef.current.setUrl(tileUrl);
+        } else {
+          const radarLayer = L.tileLayer(tileUrl, {
+            opacity: 0.60,
+            maxZoom: 18,
+            zIndex: 400
+          }).addTo(map);
+          radarTileLayerRef.current = radarLayer;
+        }
+      });
+    } else {
+      if (radarTileLayerRef.current) {
+        radarTileLayerRef.current.remove();
+        radarTileLayerRef.current = null;
+      }
+    }
+  }, [layersVisibility.radarReflectivity]);
 
   // Render radar echoes, corridors, lightning, and ETA markers
   useEffect(() => {
