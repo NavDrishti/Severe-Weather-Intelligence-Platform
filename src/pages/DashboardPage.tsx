@@ -8,7 +8,7 @@ import { StormCell, LocationCoordinates, ActiveFiltersState } from '../types/wea
 import { INITIAL_LOCATION, MOCK_STORMS, SEARCHABLE_LOCATIONS } from '../data/mockData';
 import { fetchActiveStorms } from '../api/client';
 import { fetchLiveConvectiveForecast, searchLocationsLive, LiveForecastResult } from '../services/weatherService';
-import { Search, X, MapPin, Loader2 } from 'lucide-react';
+import { Search, X, Loader2 } from 'lucide-react';
 
 interface DashboardPageProps {
   theme: 'light' | 'dark';
@@ -52,19 +52,23 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
   // Fetch real-time Open-Meteo convective nowcast whenever location changes
   useEffect(() => {
     let isCancelled = false;
-    setIsLoadingLive(true);
-    fetchLiveConvectiveForecast(currentLocation.lat, currentLocation.lon)
-      .then((result) => {
+    const fetchNowcast = async () => {
+      setIsLoadingLive(true);
+      try {
+        const result = await fetchLiveConvectiveForecast(currentLocation.lat, currentLocation.lon);
         if (!isCancelled) {
           setLiveForecast(result);
+        }
+      } catch (err) {
+        console.error('Failed to fetch live nowcast:', err);
+      } finally {
+        if (!isCancelled) {
           setIsLoadingLive(false);
         }
-      })
-      .catch((err) => {
-        console.error('Failed to fetch live nowcast:', err);
-        if (!isCancelled) setIsLoadingLive(false);
-      });
+      }
+    };
 
+    fetchNowcast();
     return () => {
       isCancelled = true;
     };
@@ -159,7 +163,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
         <div className="modal-overlay" onClick={() => setIsLocationSearchOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h3 style={{ fontSize: 'var(--font-lg)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Search size={18} color="var(--brand-teal)" />
                 <span>Search Location Forecast</span>
                 {isSearchingOnline && <Loader2 size={15} className="spin" color="var(--brand-teal)" />}
@@ -182,7 +186,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
                 border: '1px solid var(--border-color)',
                 background: 'var(--bg-subtle)',
                 color: 'var(--text-primary)',
-                fontSize: '0.85rem'
+                fontSize: 'var(--font-base)'
               }}
             />
 
@@ -199,7 +203,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
                     borderRadius: 'var(--radius-sm)',
                     background: 'var(--bg-subtle)',
                     cursor: 'pointer',
-                    fontSize: '0.8rem',
+                    fontSize: 'var(--font-sm)',
                     transition: 'background 0.15s ease'
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--brand-sky)')}
@@ -207,13 +211,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ theme }) => {
                 >
                   <div>
                     <strong style={{ color: 'var(--text-primary)' }}>{loc.name}</strong>
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginLeft: '6px' }}>
+                    <span style={{ color: 'var(--text-muted)', fontSize: 'var(--font-xs)', marginLeft: '6px' }}>
                       ({loc.district || loc.state}, {loc.state})
                     </span>
                   </div>
                   <span
                     style={{
-                      fontSize: '0.7rem',
+                      fontSize: 'var(--font-xs)',
                       fontWeight: 600,
                       padding: '2px 6px',
                       borderRadius: '3px',

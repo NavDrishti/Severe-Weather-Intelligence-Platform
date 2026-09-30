@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LocationCoordinates } from '../../types/weather';
 import { HOURLY_TIMELINE } from '../../data/mockData';
 import { LiveForecastResult } from '../../services/weatherService';
-import { MapPin, Zap, CloudHail, CloudRain, Wind, Clock, ArrowUpRight, Maximize2, X, Search, Thermometer, Droplets, Gauge } from 'lucide-react';
+import { MapPin, Zap, CloudHail, CloudRain, Wind, Clock, X, Search, Thermometer, Droplets, Gauge } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface HyperlocalPanelProps {

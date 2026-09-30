@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { StormCell, LocationCoordinates } from '../../types/weather';
 import { fetchLiveRadarTileUrl } from '../../services/weatherService';
-import { Layers, ZoomIn, ZoomOut, Compass, RotateCcw, Maximize, AlertTriangle } from 'lucide-react';
+import { Layers, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 
 interface InteractiveGisMapProps {
   storms: StormCell[];
@@ -73,7 +73,7 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
       attributionControl: false
     });
 
-    const config = getBaseMapUrls(activeBaseMap, theme);
+    const config = getBaseMapUrls('dark', 'dark');
 
     const tileLayer = L.tileLayer(config.base, {
       maxZoom: 19,
@@ -130,21 +130,26 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
 
   // Sync real-time RainViewer Doppler radar tiles
   useEffect(() => {
+    let isCancelled = false;
     if (!mapInstanceRef.current) return;
     const map = mapInstanceRef.current;
 
     if (layersVisibility.radarReflectivity) {
       fetchLiveRadarTileUrl().then((tileUrl) => {
-        if (!tileUrl || !mapInstanceRef.current) return;
-        if (radarTileLayerRef.current) {
-          radarTileLayerRef.current.setUrl(tileUrl);
-        } else {
-          const radarLayer = L.tileLayer(tileUrl, {
-            opacity: 0.60,
-            maxZoom: 18,
-            zIndex: 400
-          }).addTo(map);
-          radarTileLayerRef.current = radarLayer;
+        if (isCancelled || !tileUrl || !mapInstanceRef.current || !mapInstanceRef.current.getContainer()) return;
+        try {
+          if (radarTileLayerRef.current) {
+            radarTileLayerRef.current.setUrl(tileUrl);
+          } else {
+            const radarLayer = L.tileLayer(tileUrl, {
+              opacity: 0.60,
+              maxZoom: 18,
+              zIndex: 400
+            }).addTo(map);
+            radarTileLayerRef.current = radarLayer;
+          }
+        } catch {
+          // Leaflet layer attach safe fallback
         }
       });
     } else {
@@ -153,6 +158,10 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
         radarTileLayerRef.current = null;
       }
     }
+
+    return () => {
+      isCancelled = true;
+    };
   }, [layersVisibility.radarReflectivity]);
 
   // Render radar echoes, corridors, lightning, and ETA markers
@@ -184,11 +193,11 @@ export const InteractiveGisMap: React.FC<InteractiveGisMapProps> = ({
       if (layersVisibility.radarReflectivity && storm.coordinates && storm.coordinates.length > 2) {
         // Outer echo layer (30-40 dBZ - light cyan/green)
         const outerPoly = L.polygon(storm.coordinates as L.LatLngExpression[], {
-          color: '#2DD4BF',
-          weight: 1.5,
-          opacity: 0.8,
-          fillColor: '#0E7490',
-          fillOpacity: 0.35
+          color: isSelected ? '#38BDF8' : '#2DD4BF',
+          weight: isSelected ? 3 : 1.5,
+          opacity: isSelected ? 1 : 0.8,
+          fillColor: isSelected ? '#0284C7' : '#0E7490',
+          fillOpacity: isSelected ? 0.5 : 0.35
         }).addTo(layerGroup);
 
         // Core echo layer (45-60 dBZ - yellow to red)

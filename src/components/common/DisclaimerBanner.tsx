@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../../context/useLanguage';
 import { AlertTriangle, X } from 'lucide-react';
 
 export const DisclaimerBanner: React.FC = () => {
   const [visible, setVisible] = useState(true);
+  const { t } = useLanguage();
 
   if (!visible) return null;
 
@@ -10,7 +12,8 @@ export const DisclaimerBanner: React.FC = () => {
     <aside className="disclaimer-strip" role="complementary" aria-label="Official Disclaimer">
       <AlertTriangle size={15} className="alert-symbol" />
       <span>
-        <strong>Demonstration data — Not an official warning.</strong> Forecasts are AI-assisted probabilistic decision support and do not replace statutory advisories issued by IMD or disaster management authorities.
+        <strong>{t('disclaimer.bold', 'Demonstration data — Not an official warning.')}</strong>{' '}
+        {t('disclaimer.body', 'Forecasts are AI-assisted probabilistic decision support and do not replace statutory advisories issued by IMD or disaster management authorities.')}
       </span>
       <button
         onClick={() => setVisible(false)}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Zap, CloudHail, CloudRain, Wind, Layers, Compass, Clock, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Zap, CloudHail, CloudRain, Wind } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
   return (
@@ -22,16 +22,16 @@ export const LandingPage: React.FC = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(45, 212, 191, 0.15)', border: '1px solid rgba(45, 212, 191, 0.3)', padding: '5px 12px', borderRadius: 'var(--radius-full)', width: 'fit-content' }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2DD4BF' }}></span>
-            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#2DD4BF' }}>
+            <span style={{ fontSize: 'var(--font-xs)', fontWeight: 600, color: '#2DD4BF' }}>
               Prototype | Research & Decision Support • SIH PS 26084
             </span>
           </div>
 
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.02em' }}>
+          <h1 style={{ fontSize: 'var(--font-3xl)', fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.02em' }}>
             See severe weather earlier.
           </h1>
 
-          <p style={{ fontSize: '1.05rem', color: '#CBD5E1', lineHeight: 1.5, maxWidth: '580px' }}>
+          <p style={{ fontSize: 'var(--font-md)', color: '#CBD5E1', lineHeight: 1.5, maxWidth: '580px' }}>
             AI-assisted, multi-source convective nowcasting for thunderstorms, hail, downbursts and cloudbursts across India. Designed for disaster authorities, infrastructure managers, and public safety teams.
           </p>
 
@@ -47,7 +47,7 @@ export const LandingPage: React.FC = () => {
                 padding: '12px 24px',
                 borderRadius: 'var(--radius-md)',
                 fontWeight: 600,
-                fontSize: '0.92rem',
+                fontSize: 'var(--font-base)',
                 boxShadow: '0 4px 12px rgba(21, 94, 239, 0.35)'
               }}
             >
@@ -67,14 +67,14 @@ export const LandingPage: React.FC = () => {
                 padding: '12px 22px',
                 borderRadius: 'var(--radius-md)',
                 fontWeight: 600,
-                fontSize: '0.92rem'
+                fontSize: 'var(--font-base)'
               }}
             >
               <span>Explore How It Works</span>
             </Link>
           </div>
 
-          <div style={{ fontSize: '0.75rem', color: '#94A3B8', marginTop: '4px' }}>
+          <div style={{ fontSize: 'var(--font-xs)', color: '#94A3B8', marginTop: '4px' }}>
             ▲ NavDrishti AI is a decision-support prototype. It does not replace official warnings issued by authorized government agencies.
           </div>
         </div>
@@ -94,7 +94,7 @@ export const LandingPage: React.FC = () => {
             justifyContent: 'space-between'
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#94A3B8' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--font-xs)', color: '#94A3B8' }}>
             <span>DWR COMPOSITE • PUNE CORRIDOR</span>
             <span style={{ color: '#2DD4BF', fontWeight: 600 }}>LIVE SIMULATION</span>
           </div>
@@ -115,7 +115,7 @@ export const LandingPage: React.FC = () => {
             <text x="170" y="85" fill="#38BDF8" fontSize="9" fontFamily="sans-serif">+30m ETA</text>
           </svg>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: '#CBD5E1' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--font-xs)', color: '#CBD5E1' }}>
             <span>Grid: 2.5 km Common Mosaic</span>
             <span>Latency: 38s End-to-End</span>
           </div>
@@ -146,13 +146,13 @@ export const LandingPage: React.FC = () => {
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+            <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
               {m.label}
             </div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--brand-teal)', marginTop: '4px' }}>
+            <div style={{ fontSize: 'var(--font-xl)', fontWeight: 800, color: 'var(--brand-teal)', marginTop: '4px' }}>
               {m.val}
             </div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+            <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)', marginTop: '2px' }}>
               {m.sub}
             </div>
           </div>
@@ -161,21 +161,21 @@ export const LandingPage: React.FC = () => {
 
       {/* The Convective Forecasting Problem */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>The Convective Challenge in India</h2>
+        <h2 style={{ fontSize: 'var(--font-xl)', fontWeight: 700 }}>The Convective Challenge in India</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
           <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '20px' }}>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#C53030', marginBottom: '8px' }}>
+            <h3 style={{ fontSize: 'var(--font-md)', fontWeight: 700, color: '#C53030', marginBottom: '8px' }}>
               Why Convective Storms are Difficult
             </h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 'var(--font-base)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               Convective thunderstorms, hail storms, and cloudbursts form in less than 30–45 minutes with localized spatial scales under 5–15 km. Traditional NWP numerical models run on 6-hour cycles and miss explosive initiation, while simple persistence fails as cells split, merge, and dissipate rapidly.
             </p>
           </div>
           <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '20px' }}>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--brand-teal)', marginBottom: '8px' }}>
+            <h3 style={{ fontSize: 'var(--font-md)', fontWeight: 700, color: 'var(--brand-teal)', marginBottom: '8px' }}>
               The NavDrishti AI Solution
             </h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 'var(--font-base)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               A hybrid multi-horizon architecture fusing ground Doppler Weather Radar, INSAT-3DS rapid-scan cloud cooling, ground lightning networks, and surface AWS stations to provide lead times of 30–90 minutes with storm arrival windows and hazard-specific probability estimates.
             </p>
           </div>
@@ -184,7 +184,7 @@ export const LandingPage: React.FC = () => {
 
       {/* Hazard Modules */}
       <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Hazard Intelligence Modules</h2>
+        <h2 style={{ fontSize: 'var(--font-xl)', fontWeight: 700 }}>Hazard Intelligence Modules</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
           {[
             {
@@ -221,8 +221,8 @@ export const LandingPage: React.FC = () => {
               }}
             >
               <div>{h.icon}</div>
-              <h4 style={{ fontSize: '0.95rem', fontWeight: 700 }}>{h.title}</h4>
-              <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{h.desc}</p>
+              <h4 style={{ fontSize: 'var(--font-md)', fontWeight: 700 }}>{h.title}</h4>
+              <p style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{h.desc}</p>
             </div>
           ))}
         </div>
@@ -240,26 +240,26 @@ export const LandingPage: React.FC = () => {
           gap: '16px'
         }}
       >
-        <h2 style={{ fontSize: '1.35rem', fontWeight: 700 }}>Multi-Horizon Forecast Strategy</h2>
+        <h2 style={{ fontSize: 'var(--font-xl)', fontWeight: 700 }}>Multi-Horizon Forecast Strategy</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
           <div style={{ background: 'var(--bg-surface)', padding: '16px', borderRadius: 'var(--radius-md)', borderTop: '4px solid var(--brand-teal)' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--brand-teal)' }}>HORIZON A: 0–90 MINUTES</div>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginTop: '4px' }}>Observation-Dominant</h4>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '6px' }}>
+            <div style={{ fontSize: 'var(--font-xs)', fontWeight: 700, color: 'var(--brand-teal)' }}>HORIZON A: 0–90 MINUTES</div>
+            <h4 style={{ fontSize: 'var(--font-md)', fontWeight: 700, marginTop: '4px' }}>Observation-Dominant</h4>
+            <p style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)', marginTop: '6px' }}>
               Highest confidence. Driven by Doppler radar tracking, lightning pulse rates, and INSAT-3DS rapid cooling vectors.
             </p>
           </div>
           <div style={{ background: 'var(--bg-surface)', padding: '16px', borderRadius: 'var(--radius-md)', borderTop: '4px solid #155EEF' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#155EEF' }}>HORIZON B: 90 MIN–3 HOURS</div>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginTop: '4px' }}>Multi-Source Fusion</h4>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '6px' }}>
+            <div style={{ fontSize: 'var(--font-xs)', fontWeight: 700, color: '#155EEF' }}>HORIZON B: 90 MIN–3 HOURS</div>
+            <h4 style={{ fontSize: 'var(--font-md)', fontWeight: 700, marginTop: '4px' }}>Multi-Source Fusion</h4>
+            <p style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)', marginTop: '6px' }}>
               Balanced regime fusing cell tracking with AWS surface moisture convergence and regional NWP wind steering fields.
             </p>
           </div>
           <div style={{ background: 'var(--bg-surface)', padding: '16px', borderRadius: 'var(--radius-md)', borderTop: '4px solid #F59E0B' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#F59E0B' }}>HORIZON C: 3–6 HOURS</div>
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginTop: '4px' }}>NWP-Assisted Extension</h4>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '6px' }}>
+            <div style={{ fontSize: 'var(--font-xs)', fontWeight: 700, color: '#F59E0B' }}>HORIZON C: 3–6 HOURS</div>
+            <h4 style={{ fontSize: 'var(--font-md)', fontWeight: 700, marginTop: '4px' }}>NWP-Assisted Extension</h4>
+            <p style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)', marginTop: '6px' }}>
               Visibly wider uncertainty bands and lower confidence. Blends convective initiation potential with NCMRWF model outputs.
             </p>
           </div>
@@ -280,8 +280,8 @@ export const LandingPage: React.FC = () => {
           gap: '14px'
         }}
       >
-        <h3 style={{ fontSize: '1.4rem', fontWeight: 700 }}>Ready to Explore NavDrishti AI?</h3>
-        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', maxWidth: '600px' }}>
+        <h3 style={{ fontSize: 'var(--font-xl)', fontWeight: 700 }}>Ready to Explore NavDrishti AI?</h3>
+        <p style={{ fontSize: 'var(--font-base)', color: 'var(--text-secondary)', maxWidth: '600px' }}>
           Access the real-time operational dashboard, inspect storm tracks, scrub through forecast horizons, and review active alerts.
         </p>
         <Link
@@ -295,7 +295,7 @@ export const LandingPage: React.FC = () => {
             padding: '12px 28px',
             borderRadius: 'var(--radius-md)',
             fontWeight: 700,
-            fontSize: '0.95rem'
+            fontSize: 'var(--font-base)'
           }}
         >
           <span>Launch Dashboard</span>

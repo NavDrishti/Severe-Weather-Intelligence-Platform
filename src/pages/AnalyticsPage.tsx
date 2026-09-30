@@ -1,5 +1,5 @@
 import React from 'react';
-import { Award, BarChart2, TrendingUp, CheckCircle, ShieldCheck, Database, GitCompare } from 'lucide-react';
+import { GitCompare } from 'lucide-react';
 
 export const AnalyticsPage: React.FC = () => {
   const metrics = {
@@ -33,14 +33,14 @@ export const AnalyticsPage: React.FC = () => {
   return (
     <div style={{ padding: '24px 20px', maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
       <div>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Model Verification & Scientific Analytics</h1>
-        <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+        <h1 style={{ fontSize: 'var(--font-2xl)', fontWeight: 800 }}>Model Verification & Scientific Analytics</h1>
+        <p style={{ fontSize: 'var(--font-base)', color: 'var(--text-secondary)' }}>
           Standard meteorological verification scores adhering to World Meteorological Organization (WMO) and IMD validation guidelines
         </p>
       </div>
 
       {/* Meta context banner */}
-      <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.78rem' }}>
+      <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 'var(--font-xs)' }}>
         <div>
           Benchmark Dataset: <strong>{metrics.benchmark}</strong>
         </div>
@@ -63,13 +63,13 @@ export const AnalyticsPage: React.FC = () => {
               boxShadow: 'var(--shadow-sm)'
             }}
           >
-            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
+            <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
               {m.label}
             </span>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--brand-teal)', marginTop: '4px' }}>
+            <div style={{ fontSize: 'var(--font-2xl)', fontWeight: 800, color: 'var(--brand-teal)', marginTop: '4px' }}>
               {m.val}
             </div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+            <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)', marginTop: '2px' }}>
               {m.sub}
             </div>
           </div>
@@ -78,12 +78,12 @@ export const AnalyticsPage: React.FC = () => {
 
       {/* Baseline Comparisons Table */}
       <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '20px' }}>
-        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <h3 style={{ fontSize: 'var(--font-lg)', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <GitCompare size={18} color="var(--brand-blue)" />
           <span>Ablation & Baseline Benchmark Comparisons (0–90 min Horizon)</span>
         </h3>
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', textAlign: 'left' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-sm)', textAlign: 'left' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
                 <th style={{ padding: '10px' }}>Nowcasting Model Architecture</th>
@@ -120,7 +120,7 @@ export const AnalyticsPage: React.FC = () => {
 
       {/* Hazard-Specific Breakdown */}
       <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '20px' }}>
-        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '12px' }}>
+        <h3 style={{ fontSize: 'var(--font-lg)', fontWeight: 700, marginBottom: '12px' }}>
           Hazard-Specific Performance Breakdown
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
@@ -136,8 +136,8 @@ export const AnalyticsPage: React.FC = () => {
                 gap: '8px'
               }}
             >
-              <strong style={{ fontSize: '0.85rem' }}>{hz.hazard}</strong>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', fontSize: '0.75rem' }}>
+              <strong style={{ fontSize: 'var(--font-base)' }}>{hz.hazard}</strong>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', fontSize: 'var(--font-xs)' }}>
                 <div>POD: <strong style={{ color: 'var(--status-green)' }}>{hz.pod}</strong></div>
                 <div>FAR: <strong>{hz.far}</strong></div>
                 <div>CSI: <strong>{hz.csi}</strong></div>

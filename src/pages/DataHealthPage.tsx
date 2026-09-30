@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MOCK_DATA_HEALTH } from '../data/mockData';
 import { DataSourceHealth } from '../types/weather';
 import { fetchDataHealth } from '../api/client';
-import { Activity, CheckCircle, AlertTriangle, XCircle, RotateCcw, ShieldCheck, Database, Layers } from 'lucide-react';
+import { CheckCircle, AlertTriangle, RotateCcw } from 'lucide-react';
 
 export const DataHealthPage: React.FC = () => {
   const [sources, setSources] = useState<DataSourceHealth[]>(MOCK_DATA_HEALTH);
@@ -20,8 +20,8 @@ export const DataHealthPage: React.FC = () => {
       {/* Title */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
         <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Data Source Health & Pipeline Telemetry</h1>
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+          <h1 style={{ fontSize: 'var(--font-2xl)', fontWeight: 800 }}>Data Source Health & Pipeline Telemetry</h1>
+          <p style={{ fontSize: 'var(--font-base)', color: 'var(--text-secondary)' }}>
             Real-time ingestion latency, cadence tracking, quality flags, and degraded-mode fallback states
           </p>
         </div>
@@ -37,7 +37,7 @@ export const DataHealthPage: React.FC = () => {
             backgroundColor: 'var(--bg-surface)',
             border: '1px solid var(--border-color)',
             borderRadius: 'var(--radius-sm)',
-            fontSize: '0.8rem',
+            fontSize: 'var(--font-sm)',
             fontWeight: 600,
             cursor: 'pointer'
           }}
@@ -57,36 +57,36 @@ export const DataHealthPage: React.FC = () => {
           padding: '16px',
           borderRadius: 'var(--radius-lg)',
           border: '1px solid var(--border-color)',
-          fontSize: '0.78rem'
+          fontSize: 'var(--font-xs)'
         }}
       >
         <div>
           <span style={{ color: 'var(--text-muted)' }}>Pipeline End-to-End Latency</span>
-          <div style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--brand-teal)', marginTop: '2px' }}>
+          <div style={{ fontSize: 'var(--font-xl)', fontWeight: 800, color: 'var(--brand-teal)', marginTop: '2px' }}>
             38.5s
           </div>
-          <span style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>Target &lt; 60s for nowcast cycle</span>
+          <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>Target &lt; 60s for nowcast cycle</span>
         </div>
         <div>
           <span style={{ color: 'var(--text-muted)' }}>AI Inference Serving Latency</span>
-          <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#60A5FA', marginTop: '2px' }}>
+          <div style={{ fontSize: 'var(--font-xl)', fontWeight: 800, color: '#60A5FA', marginTop: '2px' }}>
             420 ms
           </div>
-          <span style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>ONNX / PyTorch accelerated</span>
+          <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>ONNX / PyTorch accelerated</span>
         </div>
         <div>
           <span style={{ color: 'var(--text-muted)' }}>Degraded Mode Status</span>
-          <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#F59E0B', marginTop: '2px' }}>
+          <div style={{ fontSize: 'var(--font-lg)', fontWeight: 800, color: '#F59E0B', marginTop: '2px' }}>
             AWS Fallback Active
           </div>
-          <span style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>Radar & INSAT operational</span>
+          <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>Radar & INSAT operational</span>
         </div>
         <div>
           <span style={{ color: 'var(--text-muted)' }}>Sensor Network Coverage</span>
-          <div style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--status-green)', marginTop: '2px' }}>
+          <div style={{ fontSize: 'var(--font-xl)', fontWeight: 800, color: 'var(--status-green)', marginTop: '2px' }}>
             96.8%
           </div>
-          <span style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>Pan-India operational mesh</span>
+          <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>Pan-India operational mesh</span>
         </div>
       </div>
 
@@ -108,8 +108,8 @@ export const DataHealthPage: React.FC = () => {
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
-                <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{src.name}</h3>
-                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{src.type}</span>
+                <h3 style={{ fontSize: 'var(--font-md)', fontWeight: 700 }}>{src.name}</h3>
+                <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>{src.type}</span>
               </div>
               <span
                 style={{
@@ -118,7 +118,7 @@ export const DataHealthPage: React.FC = () => {
                   gap: '4px',
                   padding: '3px 8px',
                   borderRadius: 'var(--radius-full)',
-                  fontSize: '0.7rem',
+                  fontSize: 'var(--font-xs)',
                   fontWeight: 700,
                   background: src.status === 'healthy' ? 'var(--status-green-bg)' : (src.status === 'delayed' ? 'var(--status-amber-bg)' : 'var(--status-red-bg)'),
                   color: src.status === 'healthy' ? 'var(--status-green)' : (src.status === 'delayed' ? 'var(--status-amber)' : 'var(--status-red)')
@@ -129,26 +129,26 @@ export const DataHealthPage: React.FC = () => {
               </span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', background: 'var(--bg-subtle)', padding: '10px', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', background: 'var(--bg-subtle)', padding: '10px', borderRadius: 'var(--radius-sm)', fontSize: 'var(--font-xs)' }}>
               <div>
-                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.68rem' }}>Last Feed Update:</span>
+                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: 'var(--font-xs)' }}>Last Feed Update:</span>
                 <strong>{src.last_updated_minutes} min ago</strong>
               </div>
               <div>
-                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.68rem' }}>Expected Cadence:</span>
+                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: 'var(--font-xs)' }}>Expected Cadence:</span>
                 <strong>Every {src.cadence_minutes} min</strong>
               </div>
               <div>
-                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.68rem' }}>Data Quality Score:</span>
+                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: 'var(--font-xs)' }}>Data Quality Score:</span>
                 <strong>{(src.quality_score * 100).toFixed(0)}%</strong>
               </div>
               <div>
-                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.68rem' }}>Observations (1h):</span>
+                <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: 'var(--font-xs)' }}>Observations (1h):</span>
                 <strong>{src.observations_count.toLocaleString()}</strong>
               </div>
             </div>
 
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+            <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>
               <div>Coverage Domain: <strong>{src.coverage}</strong></div>
               <div style={{ marginTop: '2px' }}>
                 Degraded Fallback: <strong style={{ color: 'var(--brand-teal)' }}>{src.fallback}</strong>
@@ -156,7 +156,7 @@ export const DataHealthPage: React.FC = () => {
             </div>
 
             {/* Ingestion Ping History */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: 'var(--font-xs)' }}>
               <span style={{ color: 'var(--text-muted)' }}>Recent Cadence Pings:</span>
               <div style={{ display: 'flex', gap: '4px' }}>
                 {src.history.map((h, i) => (

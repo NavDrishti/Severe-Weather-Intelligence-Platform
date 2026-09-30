@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { LanguageProvider } from './context/LanguageContext';
 import { GovernmentHeader } from './components/common/GovernmentHeader';
 import { DisclaimerBanner } from './components/common/DisclaimerBanner';
 import { Footer } from './components/common/Footer';
@@ -38,36 +39,38 @@ export const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <div className="app-container">
-        {/* Government Top Strip and Header */}
-        <GovernmentHeader theme={theme} onToggleTheme={toggleTheme} />
+      <LanguageProvider>
+        <div className="app-container">
+          {/* Government Top Strip and Header */}
+          <GovernmentHeader theme={theme} onToggleTheme={toggleTheme} />
 
-        {/* Operational Disclaimer Banner */}
-        <DisclaimerBanner />
+          {/* Operational Disclaimer Banner */}
+          <DisclaimerBanner />
 
-        {/* Route Pages */}
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/dashboard" element={<DashboardPage theme={theme} />} />
-          <Route path="/live-map" element={<LiveMapPage theme={theme} />} />
-          <Route path="/forecast" element={<ForecastPage />} />
-          <Route path="/storms" element={<StormsPage />} />
-          <Route path="/storms/:stormId" element={<StormDetailPage />} />
-          <Route path="/alerts" element={<AlertsPage />} />
-          <Route path="/locations" element={<LocationsPage />} />
-          <Route path="/replay" element={<ReplayPage />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/data-health" element={<DataHealthPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/help" element={<HelpPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          {/* Catch-all redirect to dashboard */}
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
+          {/* Route Pages */}
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/dashboard" element={<DashboardPage theme={theme} />} />
+            <Route path="/live-map" element={<LiveMapPage theme={theme} />} />
+            <Route path="/forecast" element={<ForecastPage />} />
+            <Route path="/storms" element={<StormsPage />} />
+            <Route path="/storms/:stormId" element={<StormDetailPage />} />
+            <Route path="/alerts" element={<AlertsPage />} />
+            <Route path="/locations" element={<LocationsPage />} />
+            <Route path="/replay" element={<ReplayPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/data-health" element={<DataHealthPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/help" element={<HelpPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            {/* Catch-all redirect to dashboard */}
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
 
-        {/* Footer */}
-        <Footer />
-      </div>
+          {/* Footer */}
+          <Footer />
+        </div>
+      </LanguageProvider>
     </BrowserRouter>
   );
 };

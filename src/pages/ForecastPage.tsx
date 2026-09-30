@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { HOURLY_TIMELINE, SEARCHABLE_LOCATIONS } from '../data/mockData';
-import { Download, Sliders, Calendar, Layers, Clock, TrendingUp, Info } from 'lucide-react';
+import { Download, Info } from 'lucide-react';
 
 export const ForecastPage: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState('Pune');
-  const [selectedHazard, setSelectedHazard] = useState('all');
   const [activeTab, setActiveTab] = useState<'probability' | 'rain_rate' | 'lightning'>('probability');
 
   const locData = SEARCHABLE_LOCATIONS.find(l => l.name === selectedLocation) || SEARCHABLE_LOCATIONS[0];
@@ -27,8 +26,8 @@ export const ForecastPage: React.FC = () => {
       {/* Page Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
         <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Detailed Forecast Explorer</h1>
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+          <h1 style={{ fontSize: 'var(--font-2xl)', fontWeight: 800 }}>Detailed Forecast Explorer</h1>
+          <p style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
             High-resolution 0–6 hr probability profiles, rainfall accumulation, and multi-source evidence
           </p>
         </div>
@@ -43,7 +42,7 @@ export const ForecastPage: React.FC = () => {
               border: '1px solid var(--border-color)',
               background: 'var(--bg-surface)',
               color: 'var(--text-primary)',
-              fontSize: '0.82rem',
+              fontSize: 'var(--font-sm)',
               fontWeight: 600
             }}
           >
@@ -64,7 +63,7 @@ export const ForecastPage: React.FC = () => {
               backgroundColor: 'var(--bg-surface)',
               border: '1px solid var(--border-color)',
               borderRadius: 'var(--radius-sm)',
-              fontSize: '0.8rem',
+              fontSize: 'var(--font-base)',
               fontWeight: 600,
               color: 'var(--text-primary)'
             }}
@@ -85,7 +84,7 @@ export const ForecastPage: React.FC = () => {
           padding: '12px 16px',
           borderRadius: 'var(--radius-md)',
           border: '1px solid var(--border-color)',
-          fontSize: '0.75rem'
+          fontSize: 'var(--font-xs)'
         }}
       >
         <div>
@@ -130,7 +129,7 @@ export const ForecastPage: React.FC = () => {
                 style={{
                   padding: '6px 12px',
                   borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.78rem',
+                  fontSize: 'var(--font-sm)',
                   fontWeight: activeTab === tab.id ? 700 : 500,
                   backgroundColor: activeTab === tab.id ? 'var(--brand-teal)' : 'var(--bg-subtle)',
                   color: activeTab === tab.id ? '#FFFFFF' : 'var(--text-secondary)'
@@ -141,7 +140,7 @@ export const ForecastPage: React.FC = () => {
             ))}
           </div>
 
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Info size={14} />
             <span>Shaded bands indicate 90% probabilistic confidence intervals</span>
           </div>
@@ -221,7 +220,7 @@ export const ForecastPage: React.FC = () => {
         </div>
 
         {/* Legend */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '14px', fontSize: '0.78rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '14px', fontSize: 'var(--font-sm)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ width: '14px', height: '3px', background: '#F87171', display: 'inline-block' }}></span>
             <span>Lightning Risk</span>
@@ -243,10 +242,10 @@ export const ForecastPage: React.FC = () => {
 
       {/* Hourly Tabular Breakdown */}
       <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '16px', overflowX: 'auto' }}>
-        <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '12px' }}>
+        <h3 style={{ fontSize: 'var(--font-lg)', fontWeight: 700, marginBottom: '12px' }}>
           Hourly Nowcast Step-by-Step Matrix
         </h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.75rem', textAlign: 'left' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-sm)', textAlign: 'left' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
               <th style={{ padding: '8px' }}>Horizon</th>
@@ -276,7 +275,7 @@ export const ForecastPage: React.FC = () => {
                       borderRadius: '3px',
                       background: row.mode === 'Observation-dominant' ? 'rgba(45,212,191,0.15)' : (row.mode === 'Multi-source Fusion' ? 'rgba(96,165,250,0.15)' : 'rgba(251,191,36,0.15)'),
                       color: row.mode === 'Observation-dominant' ? 'var(--brand-teal)' : (row.mode === 'Multi-source Fusion' ? '#60A5FA' : '#FBBF24'),
-                      fontSize: '0.68rem',
+                      fontSize: 'var(--font-xs)',
                       fontWeight: 600
                     }}
                   >

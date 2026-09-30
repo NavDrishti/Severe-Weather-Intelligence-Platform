@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AlertItem } from '../../types/weather';
-import { X, CheckCircle, Ban, AlertOctagon, HelpCircle, FileText } from 'lucide-react';
+import { X, CheckCircle, Ban, AlertOctagon, HelpCircle } from 'lucide-react';
 
 interface AlertReviewModalProps {
   alert: AlertItem | null;
@@ -30,10 +30,10 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <span style={{ fontSize: '0.72rem', color: 'var(--brand-teal)', fontFamily: 'monospace' }}>
+            <span style={{ fontSize: 'var(--font-xs)', color: 'var(--brand-teal)', fontFamily: 'monospace' }}>
               {alert.id}
             </span>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginTop: '2px' }}>
+            <h3 style={{ fontSize: 'var(--font-lg)', fontWeight: 700, marginTop: '2px' }}>
               Human-in-the-Loop Alert Review
             </h3>
           </div>
@@ -50,7 +50,7 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
             color: 'var(--status-amber)',
             padding: '8px 12px',
             borderRadius: 'var(--radius-sm)',
-            fontSize: '0.75rem',
+            fontSize: 'var(--font-xs)',
             lineHeight: 1.4
           }}
         >
@@ -58,12 +58,12 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
         </div>
 
         {/* Alert Details Summary */}
-        <div style={{ background: 'var(--bg-subtle)', padding: '12px', borderRadius: 'var(--radius-md)', fontSize: '0.8rem' }}>
+        <div style={{ background: 'var(--bg-subtle)', padding: '12px', borderRadius: 'var(--radius-md)', fontSize: 'var(--font-sm)' }}>
           <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{alert.title}</div>
           <div style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>
             Target Area: <strong>{alert.affected_area}</strong>
           </div>
-          <div style={{ display: 'flex', gap: '16px', marginTop: '6px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          <div style={{ display: 'flex', gap: '16px', marginTop: '6px', fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>
             <span>Probability: <strong>{(alert.probability * 100).toFixed(0)}%</strong></span>
             <span>Confidence: <strong>{(alert.confidence * 100).toFixed(0)}%</strong></span>
             <span>Lead Time: <strong>{alert.lead_time_min} min</strong></span>
@@ -73,7 +73,7 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
         {/* Form */}
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: 'var(--font-xs)', fontWeight: 600, marginBottom: '6px' }}>
               Review Action
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
@@ -96,7 +96,7 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
                     border: action === btn.id ? `2px solid ${btn.color}` : '1px solid var(--border-color)',
                     background: action === btn.id ? 'var(--bg-subtle)' : 'var(--bg-surface)',
                     color: 'var(--text-primary)',
-                    fontSize: '0.75rem',
+                    fontSize: 'var(--font-xs)',
                     fontWeight: action === btn.id ? 700 : 500,
                     textAlign: 'left'
                   }}
@@ -109,7 +109,7 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, marginBottom: '4px' }}>
+            <label style={{ display: 'block', fontSize: 'var(--font-xs)', fontWeight: 600, marginBottom: '4px' }}>
               Reviewer Name & Designation
             </label>
             <input
@@ -123,13 +123,13 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
                 border: '1px solid var(--border-color)',
                 background: 'var(--bg-surface)',
                 color: 'var(--text-primary)',
-                fontSize: '0.8rem'
+                fontSize: 'var(--font-sm)'
               }}
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, marginBottom: '4px' }}>
+            <label style={{ display: 'block', fontSize: 'var(--font-xs)', fontWeight: 600, marginBottom: '4px' }}>
               Operational Justification / Audit Notes
             </label>
             <textarea
@@ -144,7 +144,7 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
                 border: '1px solid var(--border-color)',
                 background: 'var(--bg-surface)',
                 color: 'var(--text-primary)',
-                fontSize: '0.8rem',
+                fontSize: 'var(--font-sm)',
                 fontFamily: 'inherit'
               }}
             />
@@ -158,7 +158,7 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
                 padding: '8px 16px',
                 borderRadius: 'var(--radius-sm)',
                 border: '1px solid var(--border-color)',
-                fontSize: '0.8rem',
+                fontSize: 'var(--font-sm)',
                 color: 'var(--text-secondary)'
               }}
             >
@@ -172,7 +172,7 @@ export const AlertReviewModal: React.FC<AlertReviewModalProps> = ({
                 backgroundColor: 'var(--brand-blue)',
                 color: '#FFFFFF',
                 fontWeight: 600,
-                fontSize: '0.8rem'
+                fontSize: 'var(--font-sm)'
               }}
             >
               Commit Decision to Audit Trail

@@ -75,7 +75,7 @@ export const ForecastTimeline: React.FC<ForecastTimelineProps> = ({
             backgroundColor: 'var(--bg-subtle)',
             border: '1px solid var(--border-color)',
             borderRadius: 'var(--radius-md)',
-            fontSize: '0.75rem',
+            fontSize: 'var(--font-xs)',
             fontWeight: 600,
             color: 'var(--text-secondary)',
             whiteSpace: 'nowrap'

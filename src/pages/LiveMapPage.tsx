@@ -3,7 +3,6 @@ import { InteractiveGisMap } from '../components/map/InteractiveGisMap';
 import { StormDetailDrawer } from '../components/storms/StormDetailDrawer';
 import { MOCK_STORMS, INITIAL_LOCATION } from '../data/mockData';
 import { StormCell } from '../types/weather';
-import { Layers, Sliders, Info, Eye } from 'lucide-react';
 
 interface LiveMapPageProps {
   theme: 'light' | 'dark';
@@ -27,11 +26,11 @@ export const LiveMapPage: React.FC<LiveMapPageProps> = ({ theme }) => {
           borderRadius: 'var(--radius-md)',
           border: '1px solid var(--border-color)',
           marginBottom: '8px',
-          fontSize: '0.8rem'
+          fontSize: 'var(--font-sm)'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>Full-Screen GIS Explorer</strong>
+          <strong style={{ fontSize: 'var(--font-base)', color: 'var(--text-primary)' }}>Full-Screen GIS Explorer</strong>
           <span style={{ color: 'var(--text-muted)' }}>|</span>
           <span>Active Convective Cells: <strong>{MOCK_STORMS.length}</strong></span>
           <span style={{ color: 'var(--text-muted)' }}>|</span>
@@ -41,7 +40,7 @@ export const LiveMapPage: React.FC<LiveMapPageProps> = ({ theme }) => {
         {/* Opacity Controls */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Radar dBZ Opacity:</span>
+            <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>Radar dBZ Opacity:</span>
             <input
               type="range"
               min="20"
@@ -50,11 +49,11 @@ export const LiveMapPage: React.FC<LiveMapPageProps> = ({ theme }) => {
               onChange={(e) => setRadarOpacity(Number(e.target.value))}
               style={{ width: '80px', accentColor: 'var(--brand-teal)' }}
             />
-            <span style={{ fontSize: '0.72rem', fontWeight: 600 }}>{radarOpacity}%</span>
+            <span style={{ fontSize: 'var(--font-xs)', fontWeight: 600 }}>{radarOpacity}%</span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Lightning Opacity:</span>
+            <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>Lightning Opacity:</span>
             <input
               type="range"
               min="20"
@@ -63,7 +62,7 @@ export const LiveMapPage: React.FC<LiveMapPageProps> = ({ theme }) => {
               onChange={(e) => setLightningDensityOpacity(Number(e.target.value))}
               style={{ width: '80px', accentColor: '#EF4444' }}
             />
-            <span style={{ fontSize: '0.72rem', fontWeight: 600 }}>{lightningDensityOpacity}%</span>
+            <span style={{ fontSize: 'var(--font-xs)', fontWeight: 600 }}>{lightningDensityOpacity}%</span>
           </div>
         </div>
       </div>

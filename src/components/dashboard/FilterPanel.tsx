@@ -56,7 +56,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onFilterChang
         </span>
         <button
           onClick={resetFilters}
-          style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}
+          style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}
           title="Reset to default filters"
         >
           <RotateCcw size={12} /> Reset
@@ -168,7 +168,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onFilterChang
               backgroundColor: 'var(--bg-subtle)',
               borderRadius: 'var(--radius-md)',
               marginTop: '6px',
-              fontSize: '0.72rem',
+              fontSize: 'var(--font-xs)',
               color: 'var(--text-secondary)',
               lineHeight: 1.5
             }}

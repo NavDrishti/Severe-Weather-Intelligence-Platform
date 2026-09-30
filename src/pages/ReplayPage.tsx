@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MOCK_REPLAY_CASES } from '../data/mockData';
-import { Play, Pause, RotateCcw, SkipBack, SkipForward, CheckCircle2, AlertTriangle, Layers, Info } from 'lucide-react';
+import { Play, Pause, RotateCcw, SkipBack, SkipForward, AlertTriangle } from 'lucide-react';
 
 export const ReplayPage: React.FC = () => {
   const [selectedCaseId, setSelectedCaseId] = useState(MOCK_REPLAY_CASES[0].id);
@@ -38,8 +38,8 @@ export const ReplayPage: React.FC = () => {
       {/* Title & Case Selector */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '14px' }}>
         <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Historical Event Replay & Benchmark Mode</h1>
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+          <h1 style={{ fontSize: 'var(--font-2xl)', fontWeight: 800 }}>Historical Event Replay & Benchmark Mode</h1>
+          <p style={{ fontSize: 'var(--font-base)', color: 'var(--text-secondary)' }}>
             Reproduce and verify past severe thunderstorm, cloudburst, and hail cases against ground truth observations
           </p>
         </div>
@@ -54,7 +54,7 @@ export const ReplayPage: React.FC = () => {
             border: '1px solid var(--border-color)',
             background: 'var(--bg-surface)',
             color: 'var(--text-primary)',
-            fontSize: '0.82rem',
+            fontSize: 'var(--font-sm)',
             fontWeight: 600
           }}
         >
@@ -74,7 +74,7 @@ export const ReplayPage: React.FC = () => {
           color: 'var(--status-amber)',
           padding: '10px 14px',
           borderRadius: 'var(--radius-md)',
-          fontSize: '0.78rem',
+          fontSize: 'var(--font-sm)',
           display: 'flex',
           alignItems: 'center',
           gap: '8px'
@@ -90,41 +90,41 @@ export const ReplayPage: React.FC = () => {
       <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <span style={{ fontSize: '0.72rem', color: 'var(--brand-teal)', fontFamily: 'monospace', fontWeight: 700 }}>
+            <span style={{ fontSize: 'var(--font-xs)', color: 'var(--brand-teal)', fontFamily: 'monospace', fontWeight: 700 }}>
               {activeCase.id}
             </span>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: 800 }}>{activeCase.title}</h2>
+            <h2 style={{ fontSize: 'var(--font-lg)', fontWeight: 800 }}>{activeCase.title}</h2>
           </div>
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '4px 10px', borderRadius: 'var(--radius-full)', background: 'var(--brand-sky)', color: 'var(--brand-blue)' }}>
+          <span style={{ fontSize: 'var(--font-xs)', fontWeight: 700, padding: '4px 10px', borderRadius: 'var(--radius-full)', background: 'var(--brand-sky)', color: 'var(--brand-blue)' }}>
             {activeCase.hazard_category}
           </span>
         </div>
 
-        <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+        <p style={{ fontSize: 'var(--font-base)', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
           {activeCase.description}
         </p>
 
         {/* Verification Metrics Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px', background: 'var(--bg-subtle)', padding: '12px', borderRadius: 'var(--radius-md)', fontSize: '0.75rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px', background: 'var(--bg-subtle)', padding: '12px', borderRadius: 'var(--radius-md)', fontSize: 'var(--font-xs)' }}>
           <div>
-            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.68rem' }}>Probability of Detection</span>
-            <strong style={{ color: 'var(--status-green)', fontSize: '0.95rem' }}>{(activeCase.metrics.pod * 100).toFixed(0)}%</strong>
+            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: 'var(--font-xs)' }}>Probability of Detection</span>
+            <strong style={{ color: 'var(--status-green)', fontSize: 'var(--font-md)' }}>{(activeCase.metrics.pod * 100).toFixed(0)}%</strong>
           </div>
           <div>
-            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.68rem' }}>False Alarm Ratio (FAR)</span>
-            <strong style={{ color: '#F59E0B', fontSize: '0.95rem' }}>{(activeCase.metrics.far * 100).toFixed(0)}%</strong>
+            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: 'var(--font-xs)' }}>False Alarm Ratio (FAR)</span>
+            <strong style={{ color: '#F59E0B', fontSize: 'var(--font-md)' }}>{(activeCase.metrics.far * 100).toFixed(0)}%</strong>
           </div>
           <div>
-            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.68rem' }}>Critical Success Index</span>
-            <strong style={{ fontSize: '0.95rem' }}>{activeCase.metrics.csi}</strong>
+            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: 'var(--font-xs)' }}>Critical Success Index</span>
+            <strong style={{ fontSize: 'var(--font-md)' }}>{activeCase.metrics.csi}</strong>
           </div>
           <div>
-            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.68rem' }}>Centroid Position Error</span>
-            <strong style={{ fontSize: '0.95rem' }}>{activeCase.metrics.position_error_km} km</strong>
+            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: 'var(--font-xs)' }}>Centroid Position Error</span>
+            <strong style={{ fontSize: 'var(--font-md)' }}>{activeCase.metrics.position_error_km} km</strong>
           </div>
           <div>
-            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.68rem' }}>Lead Time Achieved</span>
-            <strong style={{ color: 'var(--brand-teal)', fontSize: '0.95rem' }}>{activeCase.lead_time_achieved}</strong>
+            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: 'var(--font-xs)' }}>Lead Time Achieved</span>
+            <strong style={{ color: 'var(--brand-teal)', fontSize: 'var(--font-md)' }}>{activeCase.lead_time_achieved}</strong>
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@ export const ReplayPage: React.FC = () => {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
         {/* Left: Observed Radar & Lightning Ground Truth */}
         <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 700 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--font-xs)', fontWeight: 700 }}>
             <span>GROUND TRUTH: Observed Radar & Ground Strikes</span>
             <span style={{ color: 'var(--text-muted)' }}>Frame {currentFrame + 1} / {totalFrames}</span>
           </div>
@@ -178,7 +178,7 @@ export const ReplayPage: React.FC = () => {
                 </text>
               ))}
             </svg>
-            <div style={{ position: 'absolute', bottom: '8px', left: '10px', fontSize: '0.7rem', color: '#CBD5E1' }}>
+            <div style={{ position: 'absolute', bottom: '8px', left: '10px', fontSize: 'var(--font-xs)', color: '#CBD5E1' }}>
               Observed Peak Core: {activeCase.peak_intensity}
             </div>
           </div>
@@ -186,7 +186,7 @@ export const ReplayPage: React.FC = () => {
 
         {/* Right: NavDrishti AI AI Nowcast & Corridor */}
         <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 700 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--font-xs)', fontWeight: 700 }}>
             <span>MODEL NOWCAST: Extrapolated Corridor & Probability</span>
             <span style={{ color: 'var(--brand-teal)' }}>Fused Extrapolation</span>
           </div>
@@ -224,7 +224,7 @@ export const ReplayPage: React.FC = () => {
                 Pred: T+{(currentFrame * 10)}m
               </text>
             </svg>
-            <div style={{ position: 'absolute', bottom: '8px', left: '10px', fontSize: '0.7rem', color: '#2DD4BF' }}>
+            <div style={{ position: 'absolute', bottom: '8px', left: '10px', fontSize: 'var(--font-xs)', color: '#2DD4BF' }}>
               Centroid Error at this step: {(3.2 + (currentFrame * 0.15)).toFixed(1)} km
             </div>
           </div>
@@ -266,6 +266,7 @@ export const ReplayPage: React.FC = () => {
               color: '#FFFFFF',
               borderRadius: 'var(--radius-sm)',
               fontWeight: 700,
+              fontSize: 'var(--font-sm)',
               display: 'flex',
               alignItems: 'center',
               gap: '6px'
@@ -292,7 +293,7 @@ export const ReplayPage: React.FC = () => {
             style={{ flex: 1, accentColor: 'var(--brand-teal)' }}
           />
 
-          <span style={{ fontFamily: 'monospace', fontSize: '0.85rem', fontWeight: 700, minWidth: '85px', textAlign: 'right' }}>
+          <span style={{ fontFamily: 'monospace', fontSize: 'var(--font-base)', fontWeight: 700, minWidth: '85px', textAlign: 'right' }}>
             +{currentFrame * 10} min
           </span>
         </div>

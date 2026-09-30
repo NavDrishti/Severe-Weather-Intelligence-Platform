@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MOCK_ALERTS } from '../data/mockData';
 import { AlertItem } from '../types/weather';
 import { AlertReviewModal } from '../components/alerts/AlertReviewModal';
-import { ShieldAlert, CheckCircle, Ban, Clock, Filter, AlertTriangle, UserCheck, MessageSquare } from 'lucide-react';
+import { AlertTriangle, UserCheck, MessageSquare } from 'lucide-react';
 import { reviewAlert } from '../api/client';
 
 export const AlertsPage: React.FC = () => {
@@ -28,8 +28,8 @@ export const AlertsPage: React.FC = () => {
     <div style={{ padding: '24px 20px', maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* Page Title */}
       <div>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Operational Alert Centre</h1>
-        <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+        <h1 style={{ fontSize: 'var(--font-2xl)', fontWeight: 800 }}>Operational Alert Centre</h1>
+        <p style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
           Human-in-the-Loop decision verification and emergency advisory approval for disaster management
         </p>
       </div>
@@ -42,7 +42,7 @@ export const AlertsPage: React.FC = () => {
           color: 'var(--status-amber)',
           padding: '12px 16px',
           borderRadius: 'var(--radius-md)',
-          fontSize: '0.8rem',
+          fontSize: 'var(--font-sm)',
           display: 'flex',
           alignItems: 'center',
           gap: '12px'
@@ -68,7 +68,7 @@ export const AlertsPage: React.FC = () => {
             style={{
               padding: '8px 16px',
               borderRadius: 'var(--radius-sm)',
-              fontSize: '0.8rem',
+              fontSize: 'var(--font-sm)',
               fontWeight: activeTab === tab.id ? 700 : 500,
               background: activeTab === tab.id ? 'var(--brand-teal)' : 'var(--bg-subtle)',
               color: activeTab === tab.id ? '#FFFFFF' : 'var(--text-secondary)'
@@ -82,7 +82,7 @@ export const AlertsPage: React.FC = () => {
       {/* Alerts List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         {filteredAlerts.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)' }}>
+          <div style={{ textAlign: 'center', padding: '40px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-md)', color: 'var(--text-muted)', fontSize: 'var(--font-base)' }}>
             No alerts found in category '{activeTab}'.
           </div>
         ) : (
@@ -94,12 +94,12 @@ export const AlertsPage: React.FC = () => {
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                  <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: '0.75rem', color: 'var(--brand-teal)' }}>
+                  <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: 'var(--font-xs)', color: 'var(--brand-teal)' }}>
                     {alert.id}
                   </span>
                   <span
                     style={{
-                      fontSize: '0.72rem',
+                      fontSize: 'var(--font-xs)',
                       fontWeight: 700,
                       padding: '2px 8px',
                       borderRadius: 'var(--radius-full)',
@@ -109,25 +109,25 @@ export const AlertsPage: React.FC = () => {
                   >
                     {alert.severity}
                   </span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>
                     Valid: {new Date(alert.valid_until).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })} IST
                   </span>
                 </div>
 
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                <h3 style={{ fontSize: 'var(--font-lg)', fontWeight: 700, color: 'var(--text-primary)' }}>
                   {alert.title}
                 </h3>
 
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                <div style={{ fontSize: 'var(--font-base)', color: 'var(--text-secondary)' }}>
                   Target Zone: <strong>{alert.affected_area}</strong>
                 </div>
 
-                <div style={{ background: 'var(--bg-subtle)', padding: '10px', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', lineHeight: 1.4 }}>
+                <div style={{ background: 'var(--bg-subtle)', padding: '10px', borderRadius: 'var(--radius-sm)', fontSize: 'var(--font-sm)', lineHeight: 1.4 }}>
                   <strong>Recommended Operational Action:</strong> {alert.recommended_action}
                 </div>
 
                 {alert.evidence && alert.evidence.length > 0 && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>
                     <strong>Sensor Evidence:</strong>
                     {alert.evidence.map((ev, i) => (
                       <span key={i}>• {ev}</span>
@@ -136,13 +136,13 @@ export const AlertsPage: React.FC = () => {
                 )}
 
                 {alert.notes && (
-                  <div style={{ fontSize: '0.72rem', color: 'var(--brand-teal)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <div style={{ fontSize: 'var(--font-xs)', color: 'var(--brand-teal)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <MessageSquare size={13} />
                     <span>Reviewer Audit Note: {alert.notes}</span>
                   </div>
                 )}
 
-                <div style={{ display: 'flex', gap: '16px', fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                <div style={{ display: 'flex', gap: '16px', fontSize: 'var(--font-xs)', color: 'var(--text-muted)', marginTop: '4px' }}>
                   <span>Probability: <strong>{(alert.probability * 100).toFixed(0)}%</strong></span>
                   <span>Confidence: <strong>{(alert.confidence * 100).toFixed(0)}%</strong></span>
                   <span>Lead Time: <strong>{alert.lead_time_min} min</strong></span>
@@ -159,7 +159,7 @@ export const AlertsPage: React.FC = () => {
                     borderRadius: 'var(--radius-sm)',
                     backgroundColor: 'var(--brand-blue)',
                     color: '#FFFFFF',
-                    fontSize: '0.75rem',
+                    fontSize: 'var(--font-sm)',
                     fontWeight: 600,
                     display: 'flex',
                     alignItems: 'center',

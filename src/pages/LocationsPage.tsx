@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SEARCHABLE_LOCATIONS, HOURLY_TIMELINE } from '../data/mockData';
 import { fetchLiveConvectiveForecast, searchLocationsLive, LiveForecastResult } from '../services/weatherService';
 import { LocationCoordinates } from '../types/weather';
-import { Search, MapPin, Zap, CloudHail, CloudRain, Wind, ShieldCheck, Share2, Bookmark, Thermometer, Droplets, Gauge, Loader2 } from 'lucide-react';
+import { Search, MapPin, Wind, ShieldCheck, Share2, Bookmark, Thermometer, Droplets, Gauge, Loader2 } from 'lucide-react';
 
 export const LocationsPage: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -39,19 +39,23 @@ export const LocationsPage: React.FC = () => {
   // Live Convective Forecast
   useEffect(() => {
     let cancelled = false;
-    setIsLoadingLive(true);
-    fetchLiveConvectiveForecast(selectedLoc.lat, selectedLoc.lon)
-      .then((data) => {
+    const fetchForecast = async () => {
+      setIsLoadingLive(true);
+      try {
+        const data = await fetchLiveConvectiveForecast(selectedLoc.lat, selectedLoc.lon);
         if (!cancelled) {
           setLiveForecast(data);
+        }
+      } catch (err) {
+        console.error('Error fetching live location nowcast:', err);
+      } finally {
+        if (!cancelled) {
           setIsLoadingLive(false);
         }
-      })
-      .catch((err) => {
-        console.error('Error fetching live location nowcast:', err);
-        if (!cancelled) setIsLoadingLive(false);
-      });
+      }
+    };
 
+    fetchForecast();
     return () => {
       cancelled = true;
     };
@@ -63,13 +67,12 @@ export const LocationsPage: React.FC = () => {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
-
   return (
     <div style={{ padding: '24px 20px', maxWidth: '1100px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Search Header */}
       <div>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Hyperlocal Location Forecast</h1>
-        <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+        <h1 style={{ fontSize: 'var(--font-2xl)', fontWeight: 800 }}>Hyperlocal Location Forecast</h1>
+        <p style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
           Search any Indian city, district headquarters, or coordinates to view calibrated convective nowcasts
         </p>
 
@@ -82,15 +85,22 @@ export const LocationsPage: React.FC = () => {
             onChange={(e) => setQuery(e.target.value)}
             style={{
               width: '100%',
-              padding: '12px 14px 12px 42px',
+              padding: '12px 42px 12px 42px',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--border-color)',
               background: 'var(--bg-surface)',
               color: 'var(--text-primary)',
-              fontSize: '0.9rem',
+              fontSize: 'var(--font-base)',
               boxShadow: 'var(--shadow-sm)'
             }}
           />
+          {isSearchingOnline && (
+            <Loader2
+              size={18}
+              color="var(--brand-teal)"
+              style={{ position: 'absolute', right: '14px', top: '12px', animation: 'spin 1s linear infinite' }}
+            />
+          )}
         </div>
 
         {/* Quick select pills */}
@@ -102,7 +112,7 @@ export const LocationsPage: React.FC = () => {
               style={{
                 padding: '4px 10px',
                 borderRadius: 'var(--radius-full)',
-                fontSize: '0.75rem',
+                fontSize: 'var(--font-xs)',
                 fontWeight: selectedLoc.name === loc.name ? 700 : 500,
                 background: selectedLoc.name === loc.name ? 'var(--brand-teal)' : 'var(--bg-subtle)',
                 color: selectedLoc.name === loc.name ? '#FFFFFF' : 'var(--text-secondary)',
@@ -133,10 +143,10 @@ export const LocationsPage: React.FC = () => {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <MapPin size={20} color="var(--brand-teal)" />
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800 }}>{selectedLoc.name}, {selectedLoc.state}</h2>
+              <h2 style={{ fontSize: 'var(--font-xl)', fontWeight: 800 }}>{selectedLoc.name}, {selectedLoc.state}</h2>
               {isLoadingLive && <Loader2 size={16} className="spin" color="var(--brand-teal)" />}
             </div>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+            <div style={{ fontFamily: 'monospace', fontSize: 'var(--font-xs)', color: 'var(--text-muted)', marginTop: '4px' }}>
               District: {selectedLoc.district || selectedLoc.name} • Coordinates: {selectedLoc.lat.toFixed(2)}° N, {selectedLoc.lon.toFixed(2)}° E
             </div>
           </div>
@@ -151,7 +161,7 @@ export const LocationsPage: React.FC = () => {
                 padding: '6px 12px',
                 borderRadius: 'var(--radius-sm)',
                 border: '1px solid var(--border-color)',
-                fontSize: '0.75rem',
+                fontSize: 'var(--font-xs)',
                 fontWeight: 600,
                 color: 'var(--text-secondary)'
               }}
@@ -167,7 +177,7 @@ export const LocationsPage: React.FC = () => {
                 padding: '6px 12px',
                 borderRadius: 'var(--radius-sm)',
                 border: '1px solid var(--border-color)',
-                fontSize: '0.75rem',
+                fontSize: 'var(--font-xs)',
                 fontWeight: 600,
                 color: 'var(--text-secondary)'
               }}
@@ -189,34 +199,34 @@ export const LocationsPage: React.FC = () => {
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
               gap: '12px',
-              fontSize: '0.8rem'
+              fontSize: 'var(--font-sm)'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Thermometer size={16} color="#F87171" />
               <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Temperature</div>
+                <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>Temperature</div>
                 <strong style={{ color: 'var(--text-primary)' }}>{liveForecast.current.temperature}°C</strong>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Droplets size={16} color="#38BDF8" />
               <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Humidity</div>
+                <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>Humidity</div>
                 <strong style={{ color: 'var(--text-primary)' }}>{liveForecast.current.humidity}%</strong>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Wind size={16} color="#34D399" />
               <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Wind Gusts</div>
+                <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>Wind Gusts</div>
                 <strong style={{ color: 'var(--text-primary)' }}>{liveForecast.current.windGusts} km/h</strong>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Gauge size={16} color="#FBBF24" />
               <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>CAPE Convective Energy</div>
+                <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>CAPE Convective Energy</div>
                 <strong style={{ color: 'var(--text-primary)' }}>{liveForecast.current.cape} J/kg</strong>
               </div>
             </div>
@@ -236,29 +246,29 @@ export const LocationsPage: React.FC = () => {
           }}
         >
           <div>
-            <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 700, color: 'var(--text-muted)' }}>
+            <span style={{ fontSize: 'var(--font-xs)', textTransform: 'uppercase', fontWeight: 700, color: 'var(--text-muted)' }}>
               Current Convective Status
             </span>
-            <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '2px' }}>
+            <div style={{ fontSize: 'var(--font-lg)', fontWeight: 800, color: 'var(--text-primary)', marginTop: '2px' }}>
               {liveForecast?.current?.weatherDesc || 'Observing Convective Atmosphere'}
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+            <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)', marginTop: '2px' }}>
               Data Ingestion: <strong>{liveForecast?.isLive ? 'Open-Meteo High-Resolution Live Stream' : 'Calibrated Seed Model'}</strong>
             </div>
           </div>
 
           <div style={{ textAlign: 'right' }}>
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Storm ETA Window</span>
-            <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--brand-teal)' }}>
+            <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>Storm ETA Window</span>
+            <div style={{ fontSize: 'var(--font-md)', fontWeight: 800, color: 'var(--brand-teal)' }}>
               17:30 – 18:30 IST
             </div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>≈ 15m to 1h 45m</div>
+            <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>≈ 15m to 1h 45m</div>
           </div>
         </div>
 
         {/* Hourly 0-6h Matrix */}
         <div>
-          <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '10px' }}>
+          <h3 style={{ fontSize: 'var(--font-md)', fontWeight: 700, marginBottom: '10px' }}>
             0–6 Hour Probabilistic Horizon Breakdown
           </h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
@@ -269,7 +279,7 @@ export const LocationsPage: React.FC = () => {
                   background: 'var(--bg-subtle)',
                   padding: '10px',
                   borderRadius: 'var(--radius-sm)',
-                  fontSize: '0.75rem',
+                  fontSize: 'var(--font-xs)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '4px'
@@ -281,7 +291,7 @@ export const LocationsPage: React.FC = () => {
                 </div>
                 <div style={{ color: '#F87171' }}>⚡ Lightning: <strong>{step.lightning_prob}%</strong></div>
                 <div style={{ color: '#38BDF8' }}>🌧 Rain: <strong>{step.rain_rate} mm/h</strong></div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.68rem' }}>{step.mode}</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: 'var(--font-xs)' }}>{step.mode}</div>
               </div>
             ))}
           </div>
@@ -289,11 +299,11 @@ export const LocationsPage: React.FC = () => {
 
         {/* Safety Actions */}
         <div style={{ background: 'var(--bg-subtle)', padding: '16px', borderRadius: 'var(--radius-md)' }}>
-          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--brand-teal)', marginBottom: '8px' }}>
+          <h4 style={{ fontSize: 'var(--font-base)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--brand-teal)', marginBottom: '8px' }}>
             <ShieldCheck size={16} />
             <span>Recommended Public Safety Measures</span>
           </h4>
-          <ul style={{ paddingLeft: '18px', fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+          <ul style={{ paddingLeft: '18px', fontSize: 'var(--font-sm)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
             <li>Seek immediate enclosed shelter if thunder roars. Avoid standing under isolated trees or metal towers.</li>
             <li>Unplug sensitive electronic appliances and do not use landline phones during active electrical discharge.</li>
             <li>Drivers should slow down, maintain safe distance, and avoid flooded underpasses and low-lying nullahs.</li>

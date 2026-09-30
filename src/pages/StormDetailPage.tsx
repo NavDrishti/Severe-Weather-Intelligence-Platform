@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { MOCK_STORMS } from '../data/mockData';
-import { ArrowLeft, Navigation, ShieldAlert, Zap, Layers, MapPin, Building2, Clock, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Navigation, Building2 } from 'lucide-react';
 
 export const StormDetailPage: React.FC = () => {
   const { stormId } = useParams<{ stormId: string }>();
@@ -19,7 +19,7 @@ export const StormDetailPage: React.FC = () => {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
-            fontSize: '0.8rem',
+            fontSize: 'var(--font-sm)',
             color: 'var(--brand-teal)',
             fontWeight: 600,
             marginBottom: '8px'
@@ -32,14 +32,14 @@ export const StormDetailPage: React.FC = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: '0.85rem', color: 'var(--brand-teal)' }}>
+              <span style={{ fontFamily: 'monospace', fontWeight: 700, fontSize: 'var(--font-base)', color: 'var(--brand-teal)' }}>
                 {storm.id}
               </span>
               <span
                 style={{
                   padding: '2px 8px',
                   borderRadius: 'var(--radius-full)',
-                  fontSize: '0.72rem',
+                  fontSize: 'var(--font-xs)',
                   fontWeight: 700,
                   background: storm.severity === 'Very High' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(245, 158, 11, 0.15)',
                   color: storm.severity === 'Very High' ? '#EF4444' : '#F59E0B'
@@ -48,8 +48,8 @@ export const StormDetailPage: React.FC = () => {
                 {storm.severity} Risk
               </span>
             </div>
-            <h1 style={{ fontSize: '1.6rem', fontWeight: 800, marginTop: '4px' }}>{storm.name}</h1>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+            <h1 style={{ fontSize: 'var(--font-2xl)', fontWeight: 800, marginTop: '4px' }}>{storm.name}</h1>
+            <p style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
               Operational Region: {storm.region} • Nearest Met District: {storm.nearest_district}
             </p>
           </div>
@@ -61,7 +61,7 @@ export const StormDetailPage: React.FC = () => {
               backgroundColor: 'var(--brand-blue)',
               color: '#FFFFFF',
               borderRadius: 'var(--radius-md)',
-              fontSize: '0.82rem',
+              fontSize: 'var(--font-base)',
               fontWeight: 600,
               textDecoration: 'none'
             }}
@@ -85,53 +85,53 @@ export const StormDetailPage: React.FC = () => {
         }}
       >
         <div>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 600 }}>
+          <span style={{ color: 'var(--text-muted)', fontSize: 'var(--font-xs)', textTransform: 'uppercase', fontWeight: 600 }}>
             Peak Reflectivity (dBZ)
           </span>
-          <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#EF4444', marginTop: '4px' }}>
+          <div style={{ fontSize: 'var(--font-xl)', fontWeight: 800, color: '#EF4444', marginTop: '4px' }}>
             {storm.max_reflectivity_dbz} dBZ
           </div>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Severe convective core</span>
+          <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>Severe convective core</span>
         </div>
 
         <div>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 600 }}>
+          <span style={{ color: 'var(--text-muted)', fontSize: 'var(--font-xs)', textTransform: 'uppercase', fontWeight: 600 }}>
             Propagation Vector
           </span>
-          <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--brand-teal)', marginTop: '4px' }}>
+          <div style={{ fontSize: 'var(--font-xl)', fontWeight: 800, color: 'var(--brand-teal)', marginTop: '4px' }}>
             {storm.movement}
           </div>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Speed: {storm.speed_kmph} km/h ({storm.direction_deg}°)</span>
+          <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>Speed: {storm.speed_kmph} km/h ({storm.direction_deg}°)</span>
         </div>
 
         <div>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 600 }}>
+          <span style={{ color: 'var(--text-muted)', fontSize: 'var(--font-xs)', textTransform: 'uppercase', fontWeight: 600 }}>
             Echo Tops & VIL
           </span>
-          <div style={{ fontSize: '1.4rem', fontWeight: 800, color: '#60A5FA', marginTop: '4px' }}>
+          <div style={{ fontSize: 'var(--font-xl)', fontWeight: 800, color: '#60A5FA', marginTop: '4px' }}>
             {storm.echo_top_km} km
           </div>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>VIL: {storm.vil_kg_m2} kg/m²</span>
+          <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>VIL: {storm.vil_kg_m2} kg/m²</span>
         </div>
 
         <div>
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 600 }}>
+          <span style={{ color: 'var(--text-muted)', fontSize: 'var(--font-xs)', textTransform: 'uppercase', fontWeight: 600 }}>
             Estimated Arrival
           </span>
-          <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px' }}>
+          <div style={{ fontSize: 'var(--font-lg)', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px' }}>
             {storm.eta}
           </div>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Window: {storm.eta_window}</span>
+          <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>Window: {storm.eta_window}</span>
         </div>
       </div>
 
       {/* Trajectory Corridor & Intercept Predictions */}
       <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '20px' }}>
-        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <h3 style={{ fontSize: 'var(--font-lg)', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Navigation size={18} color="var(--brand-teal)" />
           <span>Extrapolated Storm Track & Corridors (TITAN Tracking)</span>
         </h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', textAlign: 'left' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-sm)', textAlign: 'left' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
               <th style={{ padding: '8px' }}>Valid Time (IST)</th>
@@ -157,7 +157,7 @@ export const StormDetailPage: React.FC = () => {
                       borderRadius: '3px',
                       background: pt.status === 'observed' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(45, 212, 191, 0.15)',
                       color: pt.status === 'observed' ? '#EF4444' : 'var(--brand-teal)',
-                      fontSize: '0.7rem',
+                      fontSize: 'var(--font-xs)',
                       fontWeight: 600
                     }}
                   >
@@ -172,7 +172,7 @@ export const StormDetailPage: React.FC = () => {
 
       {/* Affected Critical Infrastructure */}
       <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '20px' }}>
-        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <h3 style={{ fontSize: 'var(--font-lg)', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Building2 size={18} color="#60A5FA" />
           <span>Vulnerable Infrastructure & Asset Exposure</span>
         </h3>
@@ -191,16 +191,16 @@ export const StormDetailPage: React.FC = () => {
               }}
             >
               <div>
-                <strong style={{ fontSize: '0.85rem' }}>{asset.name}</strong>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                <strong style={{ fontSize: 'var(--font-base)' }}>{asset.name}</strong>
+                <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)', marginTop: '2px' }}>
                   Category: {asset.type}
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#EF4444' }}>
+                <span style={{ fontSize: 'var(--font-base)', fontWeight: 800, color: '#EF4444' }}>
                   ETA {asset.eta_min}m
                 </span>
-                <div style={{ fontSize: '0.68rem', color: 'var(--text-secondary)' }}>Precautionary lead time</div>
+                <div style={{ fontSize: 'var(--font-xs)', color: 'var(--text-secondary)' }}>Precautionary lead time</div>
               </div>
             </div>
           ))}

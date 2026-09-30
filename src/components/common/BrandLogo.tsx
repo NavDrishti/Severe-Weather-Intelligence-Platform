@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../../context/useLanguage';
 
 interface BrandLogoProps {
   size?: number;
@@ -6,6 +7,8 @@ interface BrandLogoProps {
 }
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 38, showSubtitle = true }) => {
+  const { language } = useLanguage();
+
   return (
     <div className="brand-section">
       <svg
@@ -16,8 +19,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 38, showSubtitle = 
         xmlns="http://www.w3.org/2000/svg"
         aria-label="NavDrishti AI Logo"
       >
-        {/* Outer Shield / Horizon Arc */}
-        <circle cx="50" cy="50" r="46" fill="#0D2235" stroke="#1E3A5F" strokeWidth="2" />
+        {/* Outer Shield / Horizon Arc - Pure Black base */}
+        <circle cx="50" cy="50" r="46" fill="#000000" stroke="#059669" strokeWidth="2" />
         
         {/* Radar Range Rings */}
         <circle cx="50" cy="50" r="36" stroke="#2DD4BF" strokeWidth="1.5" strokeOpacity="0.4" />
@@ -41,8 +44,10 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ size = 38, showSubtitle = 
         <circle cx="50" cy="50" r="9" stroke="#F87171" strokeWidth="1.2" strokeOpacity="0.5" />
       </svg>
       <div className="brand-titles">
-        <h1>NavDrishti AI</h1>
-        {showSubtitle && <p>Severe Weather Intelligence Platform</p>}
+        <h1>{language === 'hi' ? 'नवदृष्टि AI' : 'NavDrishti AI'}</h1>
+        {showSubtitle && (
+          <p>{language === 'hi' ? 'तीव्र मौसम आसूचना मंच' : 'Severe Weather Intelligence Platform'}</p>
+        )}
       </div>
     </div>
   );

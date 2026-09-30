@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MOCK_STORMS } from '../data/mockData';
 import { StormCell } from '../types/weather';
-import { Search, Filter, ArrowUpDown, Eye, ExternalLink, ShieldAlert, Zap, CloudHail, CloudRain } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { StormDetailDrawer } from '../components/storms/StormDetailDrawer';
 
@@ -30,8 +30,8 @@ export const StormsPage: React.FC = () => {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
         <div>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 800 }}>Active Storm-Cell Registry</h1>
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+          <h1 style={{ fontSize: 'var(--font-2xl)', fontWeight: 800 }}>Active Storm-Cell Registry</h1>
+          <p style={{ fontSize: 'var(--font-sm)', color: 'var(--text-secondary)' }}>
             Real-time tracked convective clusters identified by automated TITAN/SCIT cell tracking algorithms
           </p>
         </div>
@@ -43,7 +43,7 @@ export const StormsPage: React.FC = () => {
               style={{
                 padding: '4px 10px',
                 borderRadius: '3px',
-                fontSize: '0.75rem',
+                fontSize: 'var(--font-xs)',
                 fontWeight: 600,
                 background: viewMode === 'table' ? 'var(--brand-teal)' : 'none',
                 color: viewMode === 'table' ? '#FFFFFF' : 'var(--text-secondary)'
@@ -56,7 +56,7 @@ export const StormsPage: React.FC = () => {
               style={{
                 padding: '4px 10px',
                 borderRadius: '3px',
-                fontSize: '0.75rem',
+                fontSize: 'var(--font-xs)',
                 fontWeight: 600,
                 background: viewMode === 'cards' ? 'var(--brand-teal)' : 'none',
                 color: viewMode === 'cards' ? '#FFFFFF' : 'var(--text-secondary)'
@@ -94,7 +94,7 @@ export const StormsPage: React.FC = () => {
               border: 'none',
               outline: 'none',
               color: 'var(--text-primary)',
-              fontSize: '0.82rem'
+              fontSize: 'var(--font-base)'
             }}
           />
         </div>
@@ -107,7 +107,7 @@ export const StormsPage: React.FC = () => {
               style={{
                 padding: '4px 10px',
                 borderRadius: 'var(--radius-full)',
-                fontSize: '0.75rem',
+                fontSize: 'var(--font-xs)',
                 fontWeight: selectedSeverity === sev ? 700 : 500,
                 background: selectedSeverity === sev ? 'var(--brand-blue)' : 'var(--bg-subtle)',
                 color: selectedSeverity === sev ? '#FFFFFF' : 'var(--text-secondary)',
@@ -123,7 +123,7 @@ export const StormsPage: React.FC = () => {
       {/* View: Table Mode */}
       {viewMode === 'table' ? (
         <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', textAlign: 'left' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'var(--font-sm)', textAlign: 'left' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
                 <th style={{ padding: '12px' }}>Storm Cell ID</th>
@@ -176,7 +176,7 @@ export const StormsPage: React.FC = () => {
                           padding: '4px 8px',
                           background: 'var(--bg-subtle)',
                           borderRadius: 'var(--radius-sm)',
-                          fontSize: '0.72rem',
+                          fontSize: 'var(--font-xs)',
                           fontWeight: 600,
                           color: 'var(--text-primary)',
                           border: '1px solid var(--border-color)'
@@ -190,7 +190,7 @@ export const StormsPage: React.FC = () => {
                           padding: '4px 8px',
                           background: 'var(--brand-blue)',
                           borderRadius: 'var(--radius-sm)',
-                          fontSize: '0.72rem',
+                          fontSize: 'var(--font-xs)',
                           fontWeight: 600,
                           color: '#FFFFFF'
                         }}
@@ -223,11 +223,11 @@ export const StormsPage: React.FC = () => {
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--brand-teal)', fontFamily: 'monospace', fontWeight: 700 }}>
+                  <span style={{ fontSize: 'var(--font-xs)', color: 'var(--brand-teal)', fontFamily: 'monospace', fontWeight: 700 }}>
                     {storm.id}
                   </span>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{storm.name}</h3>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{storm.region}</span>
+                  <h3 style={{ fontSize: 'var(--font-md)', fontWeight: 700 }}>{storm.name}</h3>
+                  <span style={{ fontSize: 'var(--font-xs)', color: 'var(--text-muted)' }}>{storm.region}</span>
                 </div>
                 <span
                   style={{
@@ -235,7 +235,7 @@ export const StormsPage: React.FC = () => {
                     borderRadius: 'var(--radius-full)',
                     background: storm.severity === 'Very High' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(245, 158, 11, 0.15)',
                     color: storm.severity === 'Very High' ? '#EF4444' : '#F59E0B',
-                    fontSize: '0.72rem',
+                    fontSize: 'var(--font-xs)',
                     fontWeight: 700
                   }}
                 >
@@ -243,14 +243,14 @@ export const StormsPage: React.FC = () => {
                 </span>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', background: 'var(--bg-subtle)', padding: '8px', borderRadius: 'var(--radius-sm)', fontSize: 'var(--font-xs)' }}>
                 <div>Reflectivity: <strong>{storm.max_reflectivity_dbz} dBZ</strong></div>
                 <div>Motion: <strong>{storm.movement} ({storm.speed_kmph} km/h)</strong></div>
                 <div>Status: <strong style={{ textTransform: 'capitalize' }}>{storm.growth_status}</strong></div>
                 <div>Confidence: <strong>{(storm.confidence * 100).toFixed(0)}%</strong></div>
               </div>
 
-              <div style={{ borderLeft: '3px solid var(--brand-teal)', paddingLeft: '8px', fontSize: '0.75rem' }}>
+              <div style={{ borderLeft: '3px solid var(--brand-teal)', paddingLeft: '8px', fontSize: 'var(--font-xs)' }}>
                 <span style={{ color: 'var(--text-muted)', display: 'block' }}>Target Corridor ETA:</span>
                 <strong style={{ color: 'var(--brand-teal)' }}>{storm.eta}</strong> ({storm.eta_window})
               </div>
@@ -264,7 +264,7 @@ export const StormsPage: React.FC = () => {
                     background: 'var(--bg-subtle)',
                     border: '1px solid var(--border-color)',
                     borderRadius: 'var(--radius-sm)',
-                    fontSize: '0.75rem',
+                    fontSize: 'var(--font-xs)',
                     fontWeight: 600,
                     color: 'var(--text-primary)'
                   }}
@@ -279,7 +279,7 @@ export const StormsPage: React.FC = () => {
                     background: 'var(--brand-blue)',
                     color: '#FFFFFF',
                     borderRadius: 'var(--radius-sm)',
-                    fontSize: '0.75rem',
+                    fontSize: 'var(--font-xs)',
                     fontWeight: 600
                   }}
                 >

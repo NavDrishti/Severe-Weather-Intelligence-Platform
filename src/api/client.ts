@@ -1,4 +1,4 @@
-import { MOCK_STORMS, MOCK_ALERTS, MOCK_DATA_HEALTH, MOCK_REPLAY_CASES, SEARCHABLE_LOCATIONS, HOURLY_TIMELINE } from '../data/mockData';
+import { MOCK_STORMS, MOCK_ALERTS, MOCK_DATA_HEALTH, MOCK_REPLAY_CASES, SEARCHABLE_LOCATIONS } from '../data/mockData';
 import { StormCell, AlertItem, DataSourceHealth, ReplayCase } from '../types/weather';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
@@ -10,7 +10,7 @@ export async function fetchSystemStatus() {
   try {
     const res = await fetch(`${API_BASE}/api/v1/system/status`, { signal: AbortSignal.timeout(2000) });
     if (res.ok) return await res.json();
-  } catch (err) {
+  } catch {
     // Graceful fallback
   }
   return {
@@ -36,7 +36,7 @@ export async function fetchActiveStorms(): Promise<StormCell[]> {
       const data = await res.json();
       return data.storms || MOCK_STORMS;
     }
-  } catch (err) {
+  } catch {
     // Fallback
   }
   return MOCK_STORMS;
@@ -46,7 +46,7 @@ export async function fetchStormById(id: string): Promise<StormCell | undefined>
   try {
     const res = await fetch(`${API_BASE}/api/v1/storms/${id}`, { signal: AbortSignal.timeout(2000) });
     if (res.ok) return await res.json();
-  } catch (err) {
+  } catch {
     // Fallback
   }
   return MOCK_STORMS.find(s => s.id.toLowerCase() === id.toLowerCase());
@@ -59,7 +59,7 @@ export async function fetchAlerts(): Promise<AlertItem[]> {
       const data = await res.json();
       return data.alerts || localAlerts;
     }
-  } catch (err) {
+  } catch {
     // Fallback
   }
   return localAlerts;
@@ -77,7 +77,7 @@ export async function reviewAlert(alertId: string, action: string, reviewerName:
       const data = await res.json();
       return data.alert;
     }
-  } catch (err) {
+  } catch {
     // Fallback update
   }
   localAlerts = localAlerts.map(a => {
@@ -96,7 +96,7 @@ export async function fetchDataHealth(): Promise<DataSourceHealth[]> {
       const data = await res.json();
       return data.sources || MOCK_DATA_HEALTH;
     }
-  } catch (err) {
+  } catch {
     // Fallback
   }
   return MOCK_DATA_HEALTH;
@@ -109,7 +109,7 @@ export async function fetchReplayCases(): Promise<ReplayCase[]> {
       const data = await res.json();
       return data.cases || MOCK_REPLAY_CASES;
     }
-  } catch (err) {
+  } catch {
     // Fallback
   }
   return MOCK_REPLAY_CASES;
@@ -119,7 +119,7 @@ export async function searchLocationsApi(query: string) {
   try {
     const res = await fetch(`${API_BASE}/api/v1/locations/search?q=${encodeURIComponent(query)}`, { signal: AbortSignal.timeout(2000) });
     if (res.ok) return await res.json();
-  } catch (err) {
+  } catch {
     // Fallback to client-side live search
   }
   if (!query) return SEARCHABLE_LOCATIONS.slice(0, 6);
@@ -128,4 +128,5 @@ export async function searchLocationsApi(query: string) {
 }
 
 export { fetchLiveConvectiveForecast, searchLocationsLive, fetchLiveRadarTileUrl } from '../services/weatherService';
+
 
