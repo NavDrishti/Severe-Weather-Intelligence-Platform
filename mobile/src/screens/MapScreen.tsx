@@ -63,9 +63,11 @@ export const MapScreen: React.FC = () => {
 
     const map = L.map('map', { zoomControl: true, attributionControl: false }).setView([userLat, userLon], 10);
 
-    // Clean, high-contrast light basemap (CartoDB Positron / Voyager)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      maxZoom: 18
+    // Clean, high-resolution OpenStreetMap basemap (100% Free, NO API Key Required, Zero Watermarks)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      subdomains: ['a', 'b', 'c'],
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
     // RainViewer live radar layer
