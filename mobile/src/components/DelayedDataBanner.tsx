@@ -42,7 +42,7 @@ export const DelayedDataBanner: React.FC<DelayedDataBannerProps> = ({
         disabled={isLoading}
         activeOpacity={0.7}
       >
-        <Feather name="refresh-cw" size={13} color={Colors.textPrimary} style={{ marginRight: 4 }} />
+        <Feather name="refresh-cw" size={12} color="#0F172A" style={{ marginRight: 4 }} />
         <Text style={styles.retryText}>{t('loc.refresh')}</Text>
       </TouchableOpacity>
     </View>
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-    borderColor: 'rgba(245, 158, 11, 0.3)',
+    backgroundColor: '#FFFBEB',
+    borderColor: '#FDE68A',
     borderWidth: 1,
     borderRadius: 12,
     paddingVertical: 8,
@@ -72,26 +72,28 @@ const styles = StyleSheet.create({
   },
   delayedTag: {
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '800',
     color: Colors.riskModerate,
     textTransform: 'uppercase',
   },
   timeText: {
     fontSize: 12,
     color: Colors.textSecondary,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   retryBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.surfaceSubtle,
-    paddingVertical: 5,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 8,
   },
   retryText: {
-    color: Colors.textPrimary,
+    color: '#0F172A',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });

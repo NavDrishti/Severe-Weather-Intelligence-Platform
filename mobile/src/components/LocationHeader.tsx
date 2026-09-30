@@ -28,7 +28,7 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
       <View style={styles.topRow}>
         <View style={styles.brandGroup}>
           <View style={styles.brandIconCircle}>
-            <Ionicons name="shield-half" size={18} color="#06B6D4" />
+            <Ionicons name="shield-checkmark" size={18} color="#FFFFFF" />
           </View>
           <Text style={styles.brandTitle}>{t('app.name')}</Text>
         </View>
@@ -53,9 +53,9 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
             activeOpacity={0.7}
           >
             {isLoading ? (
-              <ActivityIndicator size="small" color={Colors.primaryLight} />
+              <ActivityIndicator size="small" color={Colors.primary} />
             ) : (
-              <Feather name="refresh-cw" size={16} color={Colors.textSecondary} />
+              <Feather name="refresh-cw" size={15} color={Colors.textPrimary} />
             )}
           </TouchableOpacity>
         </View>
@@ -63,7 +63,7 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
 
       {/* Location Pin Row */}
       <View style={styles.locationRow}>
-        <Ionicons name="location-sharp" size={20} color={Colors.primaryLight} />
+        <Ionicons name="location-sharp" size={18} color="#0F172A" />
         <Text style={styles.locationText} numberOfLines={1}>
           {locationTitle}
         </Text>
@@ -80,7 +80,7 @@ export const LocationHeader: React.FC<LocationHeaderProps> = ({
 const styles = StyleSheet.create({
   header: {
     paddingTop: 8,
-    paddingBottom: 12,
+    paddingBottom: 8,
   },
   topRow: {
     flexDirection: 'row',
@@ -94,18 +94,18 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   brandIconCircle: {
-    width: 30,
-    height: 30,
+    width: 32,
+    height: 32,
     borderRadius: 8,
-    backgroundColor: 'rgba(6, 182, 212, 0.15)',
+    backgroundColor: '#0F172A',
     alignItems: 'center',
     justifyContent: 'center',
   },
   brandTitle: {
-    fontSize: 18,
-    fontWeight: '800',
+    fontSize: 19,
+    fontWeight: '900',
     color: Colors.textPrimary,
-    letterSpacing: 0.3,
+    letterSpacing: -0.3,
   },
   actionsGroup: {
     flexDirection: 'row',
@@ -113,11 +113,11 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   langBtn: {
-    backgroundColor: Colors.surfaceSubtle,
+    backgroundColor: '#FFFFFF',
     paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 12,
-    borderWidth: 1,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    borderWidth: 1.5,
     borderColor: Colors.border,
   },
   langText: {
@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   refreshBtn: {
-    width: 32,
-    height: 32,
-    borderRadius: 12,
-    backgroundColor: Colors.surfaceSubtle,
-    borderWidth: 1,
+    width: 34,
+    height: 34,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
     borderColor: Colors.border,
     alignItems: 'center',
     justifyContent: 'center',
@@ -138,28 +138,30 @@ const styles = StyleSheet.create({
   locationRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    backgroundColor: Colors.surface,
-    paddingVertical: 8,
+    gap: 8,
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 9,
     paddingHorizontal: 12,
     borderRadius: 12,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: Colors.border,
   },
   locationText: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '700',
     color: Colors.textPrimary,
     flex: 1,
   },
   gpsBadge: {
-    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+    backgroundColor: '#ECFDF5',
+    borderColor: '#A7F3D0',
+    borderWidth: 1,
     paddingVertical: 2,
-    paddingHorizontal: 6,
+    paddingHorizontal: 7,
     borderRadius: 6,
   },
   gpsBadgeText: {
-    color: Colors.liveBadge,
+    color: '#059669',
     fontSize: 10,
     fontWeight: '800',
   },

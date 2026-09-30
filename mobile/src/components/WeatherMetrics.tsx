@@ -18,21 +18,21 @@ export const WeatherMetrics: React.FC<WeatherMetricsProps> = ({ weather }) => {
     <View style={styles.container}>
       {/* Temperature */}
       <View style={styles.metricCard}>
-        <Ionicons name="thermometer-outline" size={20} color="#F87171" />
+        <Ionicons name="thermometer-outline" size={20} color="#DC2626" />
         <Text style={styles.metricValue}>{weather.temperature}°C</Text>
         <Text style={styles.metricLabel}>{t('weather.temperature')}</Text>
       </View>
 
       {/* Humidity */}
       <View style={styles.metricCard}>
-        <Ionicons name="water-outline" size={20} color="#38BDF8" />
+        <Ionicons name="water-outline" size={20} color="#0284C7" />
         <Text style={styles.metricValue}>{weather.humidity}%</Text>
         <Text style={styles.metricLabel}>{t('weather.humidity')}</Text>
       </View>
 
       {/* Wind Gusts */}
       <View style={styles.metricCard}>
-        <Feather name="wind" size={20} color="#34D399" />
+        <Feather name="wind" size={20} color="#059669" />
         <Text style={styles.metricValue}>{weather.windGusts} <Text style={styles.unit}>km/h</Text></Text>
         <Text style={styles.metricLabel}>{t('weather.wind')}</Text>
       </View>
@@ -45,17 +45,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 10,
-    marginVertical: 10,
+    marginVertical: 8,
   },
   metricCard: {
     flex: 1,
-    backgroundColor: Colors.surface,
+    backgroundColor: '#FFFFFF',
     borderColor: Colors.border,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderRadius: 16,
     paddingVertical: 14,
     paddingHorizontal: 12,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    elevation: 1,
   },
   metricValue: {
     fontSize: 20,
@@ -66,12 +71,12 @@ const styles = StyleSheet.create({
   },
   unit: {
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: '600',
     color: Colors.textSecondary,
   },
   metricLabel: {
     fontSize: 12,
     color: Colors.textSecondary,
-    fontWeight: '500',
+    fontWeight: '600',
   },
 });

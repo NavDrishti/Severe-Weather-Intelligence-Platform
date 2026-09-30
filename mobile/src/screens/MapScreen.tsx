@@ -1,10 +1,18 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-import { WebView } from 'react-native-webview';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Platform } from 'react-native';
 import { useWeather } from '../context/WeatherContext';
 import { useLanguage } from '../context/LanguageContext';
 import { Colors } from '../theme/colors';
 import { Ionicons, Feather } from '@expo/vector-icons';
+
+let NativeWebView: any = null;
+if (Platform.OS !== 'web') {
+  try {
+    NativeWebView = require('react-native-webview').WebView;
+  } catch (e) {
+    console.warn('Native WebView could not be loaded', e);
+  }
+}
 
 export const MapScreen: React.FC = () => {
   const { location, activeStorms, risk, refresh, isLoading } = useWeather();
@@ -13,7 +21,7 @@ export const MapScreen: React.FC = () => {
   const userLat = location?.lat || 18.52;
   const userLon = location?.lon || 73.86;
 
-  // Generate lightweight Leaflet HTML for the mobile webview
+  // Generate crisp Leaflet HTML matching the White & Black design system
   const htmlContent = useMemo(() => {
     const stormsJson = JSON.stringify(activeStorms || []);
     return `
@@ -24,20 +32,25 @@ export const MapScreen: React.FC = () => {
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
-    body, html, #map { margin: 0; padding: 0; width: 100%; height: 100%; background: #0B1120; }
+    body, html, #map { margin: 0; padding: 0; width: 100%; height: 100%; background: #F8FAFC; }
     .user-marker {
-      background: #06B6D4;
+      background: #0F172A;
       border: 3px solid #FFFFFF;
       border-radius: 50%;
       width: 18px;
       height: 18px;
-      box-shadow: 0 0 15px #06B6D4;
+      box-shadow: 0 0 12px rgba(15, 23, 42, 0.45);
     }
     .storm-popup {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-size: 13px;
       color: #0F172A;
-      padding: 2px;
+      padding: 4px;
+    }
+    .leaflet-popup-content-wrapper {
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+      border: 1px solid #E2E8F0;
     }
   </style>
 </head>
@@ -48,10 +61,10 @@ export const MapScreen: React.FC = () => {
     const userLon = ${userLon};
     const storms = ${stormsJson};
 
-    const map = L.map('map', { zoomControl: false, attributionControl: false }).setView([userLat, userLon], 10);
+    const map = L.map('map', { zoomControl: true, attributionControl: false }).setView([userLat, userLon], 10);
 
-    // Dark sleek basemap
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // Clean, high-contrast light basemap (CartoDB Positron / Voyager)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 18
     }).addTo(map);
 
@@ -63,7 +76,7 @@ export const MapScreen: React.FC = () => {
           const latest = data.radar.past[data.radar.past.length - 1];
           const host = data.host || 'https://tilecache.rainviewer.com';
           const radarUrl = host + latest.path + '/256/{z}/{x}/{y}/2/1_1.png';
-          L.tileLayer(radarUrl, { opacity: 0.65, zIndex: 50 }).addTo(map);
+          L.tileLayer(radarUrl, { opacity: 0.70, zIndex: 50 }).addTo(map);
         }
       }).catch(e => console.log('Radar tile load fallback'));
 
@@ -74,11 +87,11 @@ export const MapScreen: React.FC = () => {
       .bindPopup('<div class="storm-popup"><strong>Your Location</strong><br/>' + '${location?.name || "Current"}' + '</div>')
       .openPopup();
 
-    // User Warning Range Circle (30 km threat radius)
+    // User Threat Radius (25 km circle)
     L.circle([userLat, userLon], {
-      color: '#06B6D4',
-      fillColor: '#06B6D4',
-      fillOpacity: 0.08,
+      color: '#0F172A',
+      fillColor: '#0F172A',
+      fillOpacity: 0.05,
       radius: 25000,
       weight: 1.5,
       dashArray: '4, 4'
@@ -87,7 +100,7 @@ export const MapScreen: React.FC = () => {
     // Storm Cells
     storms.forEach(storm => {
       const isSevere = (storm.severity || '').toLowerCase().includes('very high') || (storm.severity || '').toLowerCase().includes('high');
-      const strokeColor = isSevere ? '#EF4444' : '#F59E0B';
+      const strokeColor = isSevere ? '#DC2626' : '#D97706';
       const fillColor = isSevere ? '#EF4444' : '#F59E0B';
 
       // Cell polygon if available
@@ -122,7 +135,7 @@ export const MapScreen: React.FC = () => {
           color: strokeColor,
           dashArray: '6, 6',
           weight: 3,
-          opacity: 0.8
+          opacity: 0.85
         }).addTo(map);
       }
     });
@@ -147,26 +160,43 @@ export const MapScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Map View */}
+      {/* Map View - Cross-Platform (IFrame on Web/Laptop, WebView on Native) */}
       <View style={styles.mapContainer}>
-        <WebView
-          originWhitelist={['*']}
-          source={{ html: htmlContent }}
-          style={styles.webView}
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          startInLoadingState={true}
-          scalesPageToFit={true}
-        />
+        {Platform.OS === 'web' ? (
+          <iframe
+            srcDoc={htmlContent}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              backgroundColor: '#F8FAFC',
+            }}
+            title="NavDrishti Live Weather Map"
+          />
+        ) : NativeWebView ? (
+          <NativeWebView
+            originWhitelist={['*']}
+            source={{ html: htmlContent }}
+            style={styles.webView}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            startInLoadingState={true}
+            scalesPageToFit={true}
+          />
+        ) : (
+          <View style={styles.fallbackContainer}>
+            <Text style={styles.fallbackText}>Map available on mobile and web browsers.</Text>
+          </View>
+        )}
 
         {/* Floating Legend Pill */}
         <View style={styles.floatingLegend}>
           <View style={styles.legendItem}>
-            <View style={[styles.dot, { backgroundColor: '#06B6D4' }]} />
+            <View style={[styles.dot, { backgroundColor: '#0F172A' }]} />
             <Text style={styles.legendText}>{t('map.yourPosition')}</Text>
           </View>
           <View style={styles.legendItem}>
-            <View style={[styles.dot, { backgroundColor: '#EF4444' }]} />
+            <View style={[styles.dot, { backgroundColor: '#DC2626' }]} />
             <Text style={styles.legendText}>Severe Cell</Text>
           </View>
         </View>
@@ -175,7 +205,7 @@ export const MapScreen: React.FC = () => {
       {/* Simplified Distance & Direction Card */}
       <View style={styles.infoCard}>
         <View style={styles.infoRow}>
-          <Ionicons name="navigate-circle-outline" size={24} color={Colors.primaryLight} />
+          <Ionicons name="navigate-circle" size={24} color={Colors.primary} />
           <View style={{ flex: 1 }}>
             <Text style={styles.infoTitle}>
               {nearestStorm ? nearestStorm.name : 'No active storms in your immediate vicinity'}
@@ -183,7 +213,7 @@ export const MapScreen: React.FC = () => {
             <Text style={styles.infoDesc}>
               {nearestStorm
                 ? `${nearestStorm.intensity} • ${nearestStorm.etaText} • Moving ${nearestStorm.speedKmph} km/h`
-                : 'Current radar scans show clean conditions within a 30 km radius.'}
+                : 'Current radar scans show clean conditions within a 25 km radius.'}
             </Text>
           </View>
         </View>
@@ -203,6 +233,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+    backgroundColor: Colors.background,
   },
   title: {
     fontSize: 22,
@@ -213,29 +246,42 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.textSecondary,
     fontWeight: '500',
+    marginTop: 1,
   },
   refreshBtn: {
     width: 36,
     height: 36,
     borderRadius: 10,
     backgroundColor: Colors.surfaceSubtle,
+    borderWidth: 1,
+    borderColor: Colors.border,
     alignItems: 'center',
     justifyContent: 'center',
   },
   mapContainer: {
     flex: 1,
     position: 'relative',
-    backgroundColor: '#0B1120',
+    backgroundColor: '#F8FAFC',
   },
   webView: {
     flex: 1,
-    backgroundColor: '#0B1120',
+    backgroundColor: '#F8FAFC',
+  },
+  fallbackContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F8FAFC',
+  },
+  fallbackText: {
+    fontSize: 13,
+    color: Colors.textSecondary,
   },
   floatingLegend: {
     position: 'absolute',
     top: 12,
     right: 12,
-    backgroundColor: 'rgba(15, 23, 42, 0.85)',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: 20,
     paddingVertical: 6,
     paddingHorizontal: 12,
@@ -243,6 +289,11 @@ const styles = StyleSheet.create({
     gap: 12,
     borderWidth: 1,
     borderColor: Colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
   },
   legendItem: {
     flexDirection: 'row',
@@ -257,7 +308,7 @@ const styles = StyleSheet.create({
   legendText: {
     color: Colors.textPrimary,
     fontSize: 11,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   infoCard: {
     backgroundColor: Colors.surface,
@@ -272,7 +323,7 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: '800',
     color: Colors.textPrimary,
     marginBottom: 2,
   },
@@ -280,5 +331,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.textSecondary,
     lineHeight: 17,
+    fontWeight: '500',
   },
 });

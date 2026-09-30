@@ -41,7 +41,7 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
+      <StatusBar barStyle="dark-content" backgroundColor={Colors.background} />
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -49,8 +49,8 @@ export const HomeScreen: React.FC = () => {
           <RefreshControl
             refreshing={isLoading && loadingStage === 'done'}
             onRefresh={refresh}
-            tintColor={Colors.primaryLight}
-            colors={[Colors.primaryLight]}
+            tintColor={Colors.primary}
+            colors={[Colors.primary]}
           />
         }
       >
@@ -95,13 +95,13 @@ export const HomeScreen: React.FC = () => {
             {/* 2. Most Useful Weather Information */}
             <WeatherMetrics weather={currentWeather} />
 
-            {/* 3. Live Weather/Risk Map Button */}
+            {/* 3. Live Weather/Risk Map Button (Jet Black with White Text) */}
             <TouchableOpacity
               style={styles.mapButton}
               onPress={() => navigation.navigate('Map')}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
-              <Ionicons name="map-sharp" size={18} color="#0B1120" style={{ marginRight: 8 }} />
+              <Ionicons name="map" size={18} color="#FFFFFF" style={{ marginRight: 8 }} />
               <Text style={styles.mapButtonText}>{t('map.viewLive')}</Text>
             </TouchableOpacity>
 
@@ -120,7 +120,7 @@ export const HomeScreen: React.FC = () => {
                           styles.hazardBarFill,
                           {
                             width: `${Math.round(h.probability * 100)}%`,
-                            backgroundColor: h.probability >= 0.7 ? Colors.riskHigh : Colors.primaryLight,
+                            backgroundColor: h.probability >= 0.7 ? Colors.riskHigh : Colors.primary,
                           },
                         ]}
                       />
@@ -150,22 +150,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primaryLight,
+    backgroundColor: '#0F172A',
     paddingVertical: 14,
     borderRadius: 16,
     marginVertical: 12,
+    shadowColor: '#0F172A',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 3,
   },
   mapButtonText: {
     fontSize: 16,
     fontWeight: '800',
-    color: '#0B1120',
+    color: '#FFFFFF',
     letterSpacing: 0.3,
   },
   errorContainer: {
     alignItems: 'center',
     paddingVertical: 40,
-    backgroundColor: Colors.surface,
+    backgroundColor: '#FFFFFF',
     borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
     paddingHorizontal: 20,
     marginTop: 20,
   },
@@ -177,28 +184,33 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   retryButton: {
-    backgroundColor: Colors.primaryLight,
+    backgroundColor: '#0F172A',
     paddingVertical: 10,
     paddingHorizontal: 24,
     borderRadius: 10,
   },
   retryButtonText: {
-    color: '#0B1120',
+    color: '#FFFFFF',
     fontWeight: '700',
     fontSize: 14,
   },
   hazardsSummaryCard: {
-    backgroundColor: Colors.surface,
+    backgroundColor: '#FFFFFF',
     borderColor: Colors.border,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderRadius: 16,
     padding: 16,
     marginTop: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    elevation: 1,
   },
   hazardsSummaryTitle: {
     fontSize: 13,
-    fontWeight: '700',
-    color: Colors.textSecondary,
+    fontWeight: '800',
+    color: Colors.textPrimary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 12,
@@ -207,10 +219,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: 4,
+    marginVertical: 5,
   },
   hazardName: {
-    width: 90,
+    width: 95,
     fontSize: 13,
     fontWeight: '600',
     color: Colors.textPrimary,

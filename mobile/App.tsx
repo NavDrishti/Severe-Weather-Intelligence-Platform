@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -29,15 +29,21 @@ function RootTabs() {
           backgroundColor: Colors.tabBarBg,
           borderTopColor: Colors.tabBarBorder,
           borderTopWidth: 1,
-          height: 62,
-          paddingBottom: 8,
-          paddingTop: 8,
+          height: 60,
+          paddingBottom: 6,
+          paddingTop: 6,
+          elevation: 8,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 4,
         },
         tabBarActiveTintColor: Colors.tabBarActive,
         tabBarInactiveTintColor: Colors.tabBarInactive,
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: '700',
+          marginTop: -2,
         },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap = 'home';
@@ -81,16 +87,54 @@ function RootTabs() {
 }
 
 export default function App() {
+  const isWeb = Platform.OS === 'web';
+
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <LanguageProvider>
         <WeatherProvider>
-          <NavigationContainer>
-            <RootTabs />
-          </NavigationContainer>
+          {isWeb ? (
+            <View style={styles.webWrapper}>
+              <View style={styles.phoneContainer}>
+                <NavigationContainer>
+                  <RootTabs />
+                </NavigationContainer>
+              </View>
+            </View>
+          ) : (
+            <NavigationContainer>
+              <RootTabs />
+            </NavigationContainer>
+          )}
         </WeatherProvider>
       </LanguageProvider>
     </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  webWrapper: {
+    flex: 1,
+    height: '100%' as any,
+    width: '100%' as any,
+    backgroundColor: '#0F172A', // Dark presentation backdrop for laptop screen
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  phoneContainer: {
+    width: '100%',
+    maxWidth: 440,
+    height: '100%',
+    maxHeight: 900,
+    backgroundColor: '#FFFFFF',
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#334155',
+    borderRadius: 28,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.35,
+    shadowRadius: 28,
+  },
+});

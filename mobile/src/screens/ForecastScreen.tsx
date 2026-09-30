@@ -4,7 +4,7 @@ import { useWeather } from '../context/WeatherContext';
 import { useLanguage } from '../context/LanguageContext';
 import { Colors } from '../theme/colors';
 import { ForecastHour, RiskLevel } from '../types/weather';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 export const ForecastScreen: React.FC = () => {
   const { timeline, location } = useWeather();
@@ -65,7 +65,7 @@ export const ForecastScreen: React.FC = () => {
               </View>
 
               {/* Step Card */}
-              <View style={[styles.stepCard, { borderColor: color, backgroundColor: Colors.surface }]}>
+              <View style={[styles.stepCard, { borderColor: Colors.border, backgroundColor: '#FFFFFF' }]}>
                 <View style={styles.topRow}>
                   <View style={styles.timeGroup}>
                     <Text style={styles.hourLabel}>{item.hourLabel}</Text>
@@ -94,13 +94,13 @@ export const ForecastScreen: React.FC = () => {
                 <View style={styles.metricsPillRow}>
                   {item.lightningProb > 20 && (
                     <View style={styles.metricPill}>
-                      <Ionicons name="flash" size={11} color="#F87171" />
+                      <Ionicons name="flash" size={11} color="#DC2626" />
                       <Text style={styles.pillText}>Lightning {item.lightningProb}%</Text>
                     </View>
                   )}
                   {item.rainRate > 0 && (
                     <View style={styles.metricPill}>
-                      <Ionicons name="rainy" size={11} color="#60A5FA" />
+                      <Ionicons name="rainy" size={11} color="#0284C7" />
                       <Text style={styles.pillText}>{item.rainRate} mm/h</Text>
                     </View>
                   )}
@@ -124,10 +124,11 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
+    backgroundColor: Colors.background,
   },
   title: {
     fontSize: 22,
-    fontWeight: '800',
+    fontWeight: '900',
     color: Colors.textPrimary,
   },
   subtitle: {
@@ -172,9 +173,14 @@ const styles = StyleSheet.create({
   stepCard: {
     flex: 1,
     borderRadius: 16,
-    borderWidth: 1,
+    borderWidth: 1.5,
     padding: 14,
     marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    elevation: 1,
   },
   topRow: {
     flexDirection: 'row',
@@ -218,7 +224,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: 'rgba(249, 115, 22, 0.12)',
+    backgroundColor: '#FFF7ED',
+    borderWidth: 1,
+    borderColor: '#FED7AA',
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 6,
@@ -240,6 +248,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4,
     backgroundColor: Colors.surfaceSubtle,
+    borderWidth: 1,
+    borderColor: Colors.border,
     paddingVertical: 3,
     paddingHorizontal: 8,
     borderRadius: 6,

@@ -21,6 +21,7 @@ export const RiskCard: React.FC<RiskCardProps> = ({ risk }) => {
           textColor: Colors.riskSevere,
           bgColor: Colors.riskSevereBg,
           borderColor: Colors.riskSevereBorder,
+          badgeText: '#FFFFFF',
           iconName: 'alert-octagon' as const,
         };
       case 'HIGH':
@@ -28,6 +29,7 @@ export const RiskCard: React.FC<RiskCardProps> = ({ risk }) => {
           textColor: Colors.riskHigh,
           bgColor: Colors.riskHighBg,
           borderColor: Colors.riskHighBorder,
+          badgeText: '#FFFFFF',
           iconName: 'alert-triangle' as const,
         };
       case 'MODERATE':
@@ -35,6 +37,7 @@ export const RiskCard: React.FC<RiskCardProps> = ({ risk }) => {
           textColor: Colors.riskModerate,
           bgColor: Colors.riskModerateBg,
           borderColor: Colors.riskModerateBorder,
+          badgeText: '#FFFFFF',
           iconName: 'alert-circle' as const,
         };
       case 'LOW':
@@ -43,6 +46,7 @@ export const RiskCard: React.FC<RiskCardProps> = ({ risk }) => {
           textColor: Colors.riskLow,
           bgColor: Colors.riskLowBg,
           borderColor: Colors.riskLowBorder,
+          badgeText: '#FFFFFF',
           iconName: 'check-circle' as const,
         };
     }
@@ -50,7 +54,6 @@ export const RiskCard: React.FC<RiskCardProps> = ({ risk }) => {
 
   const theme = getRiskTheme(risk.level);
 
-  // Translate headline and recommendation if in Hindi
   let headlineText = risk.headline;
   if (language === 'hi') {
     if (risk.level === 'LOW') {
@@ -80,8 +83,8 @@ export const RiskCard: React.FC<RiskCardProps> = ({ risk }) => {
       {/* Top Badge */}
       <View style={styles.badgeRow}>
         <View style={[styles.levelBadge, { backgroundColor: theme.textColor }]}>
-          <Feather name={theme.iconName} size={15} color="#0B1120" style={{ marginRight: 5 }} />
-          <Text style={styles.levelText}>{t(`risk.${risk.level}`)}</Text>
+          <Feather name={theme.iconName} size={15} color={theme.badgeText} style={{ marginRight: 6 }} />
+          <Text style={[styles.levelText, { color: theme.badgeText }]}>{t(`risk.${risk.level}`)}</Text>
         </View>
 
         {risk.eta && risk.level !== 'LOW' && (
@@ -97,7 +100,7 @@ export const RiskCard: React.FC<RiskCardProps> = ({ risk }) => {
 
       {/* Safety Recommendation */}
       <View style={styles.recommendationBox}>
-        <Feather name="shield" size={16} color={theme.textColor} style={styles.recIcon} />
+        <Feather name="shield" size={17} color={theme.textColor} style={styles.recIcon} />
         <Text style={styles.recommendationText}>{recommendationText}</Text>
       </View>
     </View>
@@ -109,7 +112,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1.5,
     padding: 20,
-    marginVertical: 12,
+    marginVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   badgeRow: {
     flexDirection: 'row',
@@ -125,7 +133,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   levelText: {
-    color: '#0B1120',
     fontWeight: '800',
     fontSize: 13,
     letterSpacing: 0.5,
@@ -134,10 +141,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: 'rgba(15, 23, 42, 0.6)',
-    paddingVertical: 4,
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   etaText: {
     color: Colors.textSecondary,
@@ -146,21 +155,24 @@ const styles = StyleSheet.create({
   },
   headline: {
     fontSize: 24,
-    fontWeight: '800',
+    fontWeight: '900',
     color: Colors.textPrimary,
     lineHeight: 30,
     marginBottom: 14,
+    letterSpacing: -0.4,
   },
   recommendationBox: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: 'rgba(11, 17, 32, 0.5)',
-    padding: 12,
+    backgroundColor: '#FFFFFF',
+    padding: 14,
     borderRadius: 14,
-    gap: 8,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    gap: 10,
   },
   recIcon: {
-    marginTop: 2,
+    marginTop: 1,
   },
   recommendationText: {
     flex: 1,
